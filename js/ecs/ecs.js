@@ -86,6 +86,9 @@ export default class ECS {
 		})
 
 		ECS.#renderIndex = ECS.#systems.findIndex(s => s.category == Category.Graphics)
+
+		if(ECS.#renderIndex == -1)
+			ECS.#renderIndex = ECS.#systems.length
 	}
 
 	/**
