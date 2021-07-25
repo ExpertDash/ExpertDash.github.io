@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,27 +7,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const ecs_js_1 = require("../../ecs.js");
-const vec3_js_1 = __importDefault(require("../../math/vec3.js"));
-const world_js_1 = __importDefault(require("../world.js"));
-let Motion = class Motion extends ecs_js_1.Component {
+import { Component } from "../../ecs.js";
+import Vector3 from "../../math/vec3.js";
+import World from "../world.js";
+let Motion = class Motion extends Component {
     /**
      * @param velocity Initial velocity
      */
     constructor(velocity) {
         super();
         this.mass = 1;
-        this.acceleration = vec3_js_1.default.zero;
-        this.velocity = velocity ?? vec3_js_1.default.zero;
+        this.acceleration = Vector3.zero;
+        this.velocity = velocity ?? Vector3.zero;
     }
 };
 Motion = __decorate([
-    world_js_1.default.register.component(),
-    __metadata("design:paramtypes", [vec3_js_1.default])
+    World.register.component(),
+    __metadata("design:paramtypes", [Vector3])
 ], Motion);
-exports.default = Motion;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibW90aW9uLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vc3JjL2NvbW1vbi9jb21wb25lbnRzL21vdGlvbi50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7OztBQUFBLHlDQUFzQztBQUN0QyxpRUFBd0M7QUFDeEMsMkRBQStCO0FBRy9CLElBQXFCLE1BQU0sR0FBM0IsTUFBcUIsTUFBTyxTQUFRLGtCQUFTO0lBSzVDOztPQUVHO0lBQ0gsWUFBWSxRQUFrQjtRQUM3QixLQUFLLEVBQUUsQ0FBQTtRQUNQLElBQUksQ0FBQyxJQUFJLEdBQUcsQ0FBQyxDQUFBO1FBQ2IsSUFBSSxDQUFDLFlBQVksR0FBRyxpQkFBTyxDQUFDLElBQUksQ0FBQTtRQUNoQyxJQUFJLENBQUMsUUFBUSxHQUFHLFFBQVEsSUFBSSxpQkFBTyxDQUFDLElBQUksQ0FBQTtJQUN6QyxDQUFDO0NBQ0QsQ0FBQTtBQWRvQixNQUFNO0lBRDFCLGtCQUFLLENBQUMsUUFBUSxDQUFDLFNBQVMsRUFBRTtxQ0FTSCxpQkFBTztHQVJWLE1BQU0sQ0FjMUI7a0JBZG9CLE1BQU0iLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge0NvbXBvbmVudH0gZnJvbSBcIi4uLy4uL2Vjcy5qc1wiXHJcbmltcG9ydCBWZWN0b3IzIGZyb20gXCIuLi8uLi9tYXRoL3ZlYzMuanNcIlxyXG5pbXBvcnQgV29ybGQgZnJvbSBcIi4uL3dvcmxkLmpzXCJcclxuXHJcbkBXb3JsZC5yZWdpc3Rlci5jb21wb25lbnQoKVxyXG5leHBvcnQgZGVmYXVsdCBjbGFzcyBNb3Rpb24gZXh0ZW5kcyBDb21wb25lbnQge1xyXG5cdG1hc3M6IG51bWJlclxyXG5cdGFjY2VsZXJhdGlvbjogVmVjdG9yM1xyXG5cdHZlbG9jaXR5OiBWZWN0b3IzXHJcblxyXG5cdC8qKlxyXG5cdCAqIEBwYXJhbSB2ZWxvY2l0eSBJbml0aWFsIHZlbG9jaXR5XHJcblx0ICovXHJcblx0Y29uc3RydWN0b3IodmVsb2NpdHk/OiBWZWN0b3IzKSB7XHJcblx0XHRzdXBlcigpXHJcblx0XHR0aGlzLm1hc3MgPSAxXHJcblx0XHR0aGlzLmFjY2VsZXJhdGlvbiA9IFZlY3RvcjMuemVyb1xyXG5cdFx0dGhpcy52ZWxvY2l0eSA9IHZlbG9jaXR5ID8/IFZlY3RvcjMuemVyb1xyXG5cdH1cclxufSJdfQ==
+export default Motion;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibW90aW9uLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vc3JjL2NvbW1vbi9jb21wb25lbnRzL21vdGlvbi50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFBQSxPQUFPLEVBQUMsU0FBUyxFQUFDLE1BQU0sY0FBYyxDQUFBO0FBQ3RDLE9BQU8sT0FBTyxNQUFNLG9CQUFvQixDQUFBO0FBQ3hDLE9BQU8sS0FBSyxNQUFNLGFBQWEsQ0FBQTtBQUcvQixJQUFxQixNQUFNLEdBQTNCLE1BQXFCLE1BQU8sU0FBUSxTQUFTO0lBSzVDOztPQUVHO0lBQ0gsWUFBWSxRQUFrQjtRQUM3QixLQUFLLEVBQUUsQ0FBQTtRQUNQLElBQUksQ0FBQyxJQUFJLEdBQUcsQ0FBQyxDQUFBO1FBQ2IsSUFBSSxDQUFDLFlBQVksR0FBRyxPQUFPLENBQUMsSUFBSSxDQUFBO1FBQ2hDLElBQUksQ0FBQyxRQUFRLEdBQUcsUUFBUSxJQUFJLE9BQU8sQ0FBQyxJQUFJLENBQUE7SUFDekMsQ0FBQztDQUNELENBQUE7QUFkb0IsTUFBTTtJQUQxQixLQUFLLENBQUMsUUFBUSxDQUFDLFNBQVMsRUFBRTtxQ0FTSCxPQUFPO0dBUlYsTUFBTSxDQWMxQjtlQWRvQixNQUFNIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtDb21wb25lbnR9IGZyb20gXCIuLi8uLi9lY3MuanNcIlxyXG5pbXBvcnQgVmVjdG9yMyBmcm9tIFwiLi4vLi4vbWF0aC92ZWMzLmpzXCJcclxuaW1wb3J0IFdvcmxkIGZyb20gXCIuLi93b3JsZC5qc1wiXHJcblxyXG5AV29ybGQucmVnaXN0ZXIuY29tcG9uZW50KClcclxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgTW90aW9uIGV4dGVuZHMgQ29tcG9uZW50IHtcclxuXHRtYXNzOiBudW1iZXJcclxuXHRhY2NlbGVyYXRpb246IFZlY3RvcjNcclxuXHR2ZWxvY2l0eTogVmVjdG9yM1xyXG5cclxuXHQvKipcclxuXHQgKiBAcGFyYW0gdmVsb2NpdHkgSW5pdGlhbCB2ZWxvY2l0eVxyXG5cdCAqL1xyXG5cdGNvbnN0cnVjdG9yKHZlbG9jaXR5PzogVmVjdG9yMykge1xyXG5cdFx0c3VwZXIoKVxyXG5cdFx0dGhpcy5tYXNzID0gMVxyXG5cdFx0dGhpcy5hY2NlbGVyYXRpb24gPSBWZWN0b3IzLnplcm9cclxuXHRcdHRoaXMudmVsb2NpdHkgPSB2ZWxvY2l0eSA/PyBWZWN0b3IzLnplcm9cclxuXHR9XHJcbn0iXX0=

@@ -1,5 +1,5 @@
 import ECS, {Entities, System} from "../ecs.js"
-import "./common.js"
+import "./lib.js"
 
 const World = new ECS()
 
@@ -9,6 +9,11 @@ export class Simulator {
 
 	static #deltaTime: number = 0
 	static #fixedDeltaTime: number = 0.02
+
+	/** Whether the simulation is actively being updated */
+	public static get active(): boolean {
+		return !isNaN(this.logicHandle) || !isNaN(this.renderHandle)
+	}
 
 	/** Time between frames */
 	public static get deltaTime(): number {
@@ -33,6 +38,9 @@ export class Simulator {
 	 * Resumes world simulation
 	 */
 	public static resume(): void {
+		if(this.active)
+			return
+
 		let lastTime = 0
 		let systems = [...World.systems]
 		let divider = systems.findIndex(v => v.constructor = Simulator.Category.UI)
@@ -57,6 +65,9 @@ export class Simulator {
 	 * Suspends world simulation
 	 */
 	public static suspend(): void {
+		if(!this.active)
+			return
+
 		clearInterval(this.logicHandle)
 		this.logicHandle = NaN
 

@@ -3,6 +3,7 @@ import Entities from "./entities.js"
 
 type Constructor<T> = new(...args: any[]) => T
 type DefaultConstructor<T> = new() => T
+type MapToConstructor<Ts> = {readonly [K in keyof Ts]: Constructor<Ts[K]>}
 
 /**
  * A unique object with components bound to it
@@ -89,6 +90,26 @@ export default class Entity {
 	 */
 	public has(ctor: Constructor<Component>): boolean {
 		return this.entities["registry"].get(ctor).has(this.id)
+	}
+
+	/**
+	 * Executes the function if the entity has the specified components
+	 * @param executor Function to execute
+	 * @param ctors Components the entity must have
+	 */
+	public run<Ts extends readonly Component[]>(executor: (...args: Ts) => void, ...ctors: MapToConstructor<Ts>): void {
+		let components: Component[] = []
+
+		for(let i = 0; i < ctors.length; i++) {
+			let componentType = ctors[i]
+
+			if(!this.has(componentType))
+				return
+
+			components.push(this.get(componentType))
+		}
+
+		executor(...(components as any as Ts))
 	}
 
 	public *[Symbol.iterator](): IterableIterator<Component> {

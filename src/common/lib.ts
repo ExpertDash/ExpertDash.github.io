@@ -1,5 +1,5 @@
 export {default as Collider} from "./components/collider.js"
-export {default as Mesh} from "./components/mesh.js"
+export {default as Model} from "./components/model.js"
 export {default as Motion} from "./components/motion.js"
 export {default as Name} from "./components/name.js"
 export {default as Time} from "./components/time.js"

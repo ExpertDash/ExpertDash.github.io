@@ -14,8 +14,18 @@ export default class Entities {
 	private unusedIds: Set<number> = new Set()
 	private nextId: number = 0
 
+	/**
+	 * The amount of entities present
+	 */
 	public get count(): number {
 		return this.ids.size
+	}
+
+	/**
+	 * @returns The entity associated with the given id
+	 */
+	public from(entityId: number): Entity {
+		return new Entity(this, entityId)
 	}
 
 	/**
@@ -64,7 +74,7 @@ export default class Entities {
 				components.push(componentRegistry.get(id))
 			}
 
-			executor(...(components as unknown as Ts))
+			executor(...(components as any as Ts))
 		}
 	}
 

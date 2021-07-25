@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,16 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const world_js_1 = __importDefault(require("../world.js"));
-const ecs_js_1 = require("../../ecs.js");
+import World from "../world.js";
+import { Component } from "../../ecs.js";
 /**
  * Allows association by name
  */
-let Name = class Name extends ecs_js_1.Component {
+let Name = class Name extends Component {
     constructor(value) {
         super();
         this.value = value;
@@ -30,8 +25,8 @@ let Name = class Name extends ecs_js_1.Component {
     }
 };
 Name = __decorate([
-    world_js_1.default.register.component(),
+    World.register.component(),
     __metadata("design:paramtypes", [String])
 ], Name);
-exports.default = Name;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibmFtZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jb21tb24vY29tcG9uZW50cy9uYW1lLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7O0FBQUEsMkRBQStCO0FBQy9CLHlDQUFzQztBQUV0Qzs7R0FFRztBQUVILElBQXFCLElBQUksR0FBekIsTUFBcUIsSUFBSyxTQUFRLGtCQUFTO0lBRzFDLFlBQW1CLEtBQWE7UUFDL0IsS0FBSyxFQUFFLENBQUE7UUFDUCxJQUFJLENBQUMsS0FBSyxHQUFHLEtBQUssQ0FBQTtJQUNuQixDQUFDO0lBRWUsT0FBTztRQUN0QixPQUFPLElBQUksQ0FBQyxLQUFLLENBQUE7SUFDbEIsQ0FBQztJQUVlLFFBQVE7UUFDdkIsT0FBTyxJQUFJLENBQUMsS0FBSyxDQUFBO0lBQ2xCLENBQUM7Q0FDRCxDQUFBO0FBZm9CLElBQUk7SUFEeEIsa0JBQUssQ0FBQyxRQUFRLENBQUMsU0FBUyxFQUFFOztHQUNOLElBQUksQ0FleEI7a0JBZm9CLElBQUkiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgV29ybGQgZnJvbSBcIi4uL3dvcmxkLmpzXCJcclxuaW1wb3J0IHtDb21wb25lbnR9IGZyb20gXCIuLi8uLi9lY3MuanNcIlxyXG5cclxuLyoqXHJcbiAqIEFsbG93cyBhc3NvY2lhdGlvbiBieSBuYW1lXHJcbiAqL1xyXG5AV29ybGQucmVnaXN0ZXIuY29tcG9uZW50KClcclxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgTmFtZSBleHRlbmRzIENvbXBvbmVudCB7XHJcblx0cHVibGljIHZhbHVlOiBzdHJpbmdcclxuXHJcblx0cHVibGljIGNvbnN0cnVjdG9yKHZhbHVlOiBzdHJpbmcpIHtcclxuXHRcdHN1cGVyKClcclxuXHRcdHRoaXMudmFsdWUgPSB2YWx1ZVxyXG5cdH1cclxuXHJcblx0cHVibGljIG92ZXJyaWRlIHZhbHVlT2YoKSB7XHJcblx0XHRyZXR1cm4gdGhpcy52YWx1ZVxyXG5cdH1cclxuXHJcblx0cHVibGljIG92ZXJyaWRlIHRvU3RyaW5nKCkge1xyXG5cdFx0cmV0dXJuIHRoaXMudmFsdWVcclxuXHR9XHJcbn0iXX0=
+export default Name;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibmFtZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jb21tb24vY29tcG9uZW50cy9uYW1lLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQUFBLE9BQU8sS0FBSyxNQUFNLGFBQWEsQ0FBQTtBQUMvQixPQUFPLEVBQUMsU0FBUyxFQUFDLE1BQU0sY0FBYyxDQUFBO0FBRXRDOztHQUVHO0FBRUgsSUFBcUIsSUFBSSxHQUF6QixNQUFxQixJQUFLLFNBQVEsU0FBUztJQUcxQyxZQUFtQixLQUFhO1FBQy9CLEtBQUssRUFBRSxDQUFBO1FBQ1AsSUFBSSxDQUFDLEtBQUssR0FBRyxLQUFLLENBQUE7SUFDbkIsQ0FBQztJQUVlLE9BQU87UUFDdEIsT0FBTyxJQUFJLENBQUMsS0FBSyxDQUFBO0lBQ2xCLENBQUM7SUFFZSxRQUFRO1FBQ3ZCLE9BQU8sSUFBSSxDQUFDLEtBQUssQ0FBQTtJQUNsQixDQUFDO0NBQ0QsQ0FBQTtBQWZvQixJQUFJO0lBRHhCLEtBQUssQ0FBQyxRQUFRLENBQUMsU0FBUyxFQUFFOztHQUNOLElBQUksQ0FleEI7ZUFmb0IsSUFBSSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBXb3JsZCBmcm9tIFwiLi4vd29ybGQuanNcIlxyXG5pbXBvcnQge0NvbXBvbmVudH0gZnJvbSBcIi4uLy4uL2Vjcy5qc1wiXHJcblxyXG4vKipcclxuICogQWxsb3dzIGFzc29jaWF0aW9uIGJ5IG5hbWVcclxuICovXHJcbkBXb3JsZC5yZWdpc3Rlci5jb21wb25lbnQoKVxyXG5leHBvcnQgZGVmYXVsdCBjbGFzcyBOYW1lIGV4dGVuZHMgQ29tcG9uZW50IHtcclxuXHRwdWJsaWMgdmFsdWU6IHN0cmluZ1xyXG5cclxuXHRwdWJsaWMgY29uc3RydWN0b3IodmFsdWU6IHN0cmluZykge1xyXG5cdFx0c3VwZXIoKVxyXG5cdFx0dGhpcy52YWx1ZSA9IHZhbHVlXHJcblx0fVxyXG5cclxuXHRwdWJsaWMgb3ZlcnJpZGUgdmFsdWVPZigpIHtcclxuXHRcdHJldHVybiB0aGlzLnZhbHVlXHJcblx0fVxyXG5cclxuXHRwdWJsaWMgb3ZlcnJpZGUgdG9TdHJpbmcoKSB7XHJcblx0XHRyZXR1cm4gdGhpcy52YWx1ZVxyXG5cdH1cclxufSJdfQ==

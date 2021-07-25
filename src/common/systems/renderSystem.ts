@@ -1,8 +1,7 @@
 import {System} from "../../ecs.js"
 import Entities from "../../ecs/entities.js"
 import Matrix4x4 from "../../math/mat4.js"
-import Mesh from "../components/mesh.js"
-import Transform from "../components/transform.js"
+import {Model, Transform} from "../lib.js"
 import World, {Simulator} from "../world.js"
 
 const GL = WebGLRenderingContext
@@ -99,23 +98,23 @@ export default class RenderSystem extends System {
 		gl.depthFunc(GL.LEQUAL)
 		gl.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
 
-		entities.forEach((mesh, transform) => {
-			if(!mesh.material)
+		entities.forEach((model, transform) => {
+			if(!model.material)
 				return
 
-			let vertexPosition = mesh.material.shader.getAttribute("vertexPosition").location
-			let projectionMatrix = mesh.material.shader.getUniform("projectionMatrix").location
-			let modelViewMatrix = mesh.material.shader.getUniform("modelViewMatrix").location
+			let vertexPosition = model.material.shader.getAttribute("vertexPosition").location
+			let projectionMatrix = model.material.shader.getUniform("projectionMatrix").location
+			let modelViewMatrix = model.material.shader.getUniform("modelViewMatrix").location
 
-			gl.useProgram(mesh.material.shader.program)
-			gl.bindBuffer(GL.ARRAY_BUFFER, mesh.vertexBuffer)
+			gl.useProgram(model.material.shader.program)
+			gl.bindBuffer(GL.ARRAY_BUFFER, model.mesh.vertexBuffer)
 			gl.vertexAttribPointer(vertexPosition, 2, GL.FLOAT, false, 0, 0)
 			gl.enableVertexAttribArray(vertexPosition)
-			mesh.material.apply(gl)
+			model.material.apply(gl)
 			gl.uniformMatrix4fv(projectionMatrix, false, this.projectionMatrix)
 			gl.uniformMatrix4fv(modelViewMatrix, false, transform.matrix.mul(this.viewMatrix).transpose())
 			gl.drawArrays(GL.TRIANGLE_STRIP, 0, 4)
-		}, Mesh, Transform)
+		}, Model, Transform)
 	}
 
 	private refreshSize = (target: HTMLCanvasElement) => {

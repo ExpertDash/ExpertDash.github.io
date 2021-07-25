@@ -2,9 +2,9 @@ import {Component} from "../../ecs.js"
 import Vector3 from "../../math/vec3.js"
 import BoundingBox from "../../physics/boundingBox.js"
 import Collision from "../../physics/collision.js"
+import Mesh from "../../rendering/mesh.js"
+import {Transform} from "../lib.js"
 import World from "../world.js"
-import Transform from "./transform.js"
-import Mesh from "./mesh.js"
 
 @World.register.component()
 export default class Collider extends Component {

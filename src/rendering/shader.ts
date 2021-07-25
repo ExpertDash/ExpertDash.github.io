@@ -35,17 +35,17 @@ export default class Shader {
 	}
 
 	/**
-	 * 
 	 * @param path Path to GLSL shader
+	 * @returns Shader loaded from the path
 	 */
-	public static async create(path: string): Promise<Shader> {
+	public static async load(path: string): Promise<Shader> {
 		const context = World.systems.get(RenderSystem).context
 		const program = context.createProgram()
 
 		let source = await Retriever.fetch(path)
 
-		let {shader: vert, qualified: vQualified} = Shader.load(context, "vert", source)
-		let {shader: frag, qualified: fQualified} = Shader.load(context, "frag", source)
+		let {shader: vert, qualified: vQualified} = Shader.create(context, "vert", source)
+		let {shader: frag, qualified: fQualified} = Shader.create(context, "frag", source)
 
 		/** @type {Qualified[]} */
 		let qualified = [].concat(vQualified, fQualified)
@@ -86,7 +86,7 @@ export default class Shader {
 		return shader
 	}
 
-	private static load = (context: WebGLRenderingContext, target: ShaderArchetype, source: string): {shader: WebGLShader, qualified: Qualified[]} => {
+	private static create = (context: WebGLRenderingContext, target: ShaderArchetype, source: string): {shader: WebGLShader, qualified: Qualified[]} => {
 		let type: GLenum
 
 		switch(target) {
@@ -101,12 +101,12 @@ export default class Shader {
 		}
 
 		return {
-			shader: Shader.loadType(context, type, source),
+			shader: Shader.createType(context, type, source),
 			qualified: Shader.extractQualifiers(source)
 		}
 	}
 
-	private static loadType = (context: WebGLRenderingContext, type: GLenum, source: string): WebGLShader => {
+	private static createType = (context: WebGLRenderingContext, type: GLenum, source: string): WebGLShader => {
 		const shader = context.createShader(type)
 		context.shaderSource(shader, source)
 		context.compileShader(shader)
