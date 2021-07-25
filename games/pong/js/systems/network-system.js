@@ -1,23 +1,26 @@
 import System from "../../../../js/ecs/system.js"
 import Entity from "../../../../js/ecs/entity.js"
 import Transform from "../../../../js/ecs/components/transform.js"
-import {Host, Guest} from "../../../../js/utils/peers.js"
 import Vector3 from "../../../../js/math/vec3.js"
 import Ownership from "../components/ownership.js"
+
+import Host from "../../../../js/utils/peer/host.js"
+import Guest from "../../../../js/utils/peer/guest.js"
+// import {Host, Guest} from "../../../../js/utils/peers.js"
 
 export class ServerSystem extends System {
 	static host = new Host()
 
 	constructor() {
 		super()
-		ServerSystem.host.onReceive = this.receive
+		ServerSystem.host.on("recieve", this.receive)
 	}
 
 	update() {
 		for(let entity of Entity.find(Transform, Ownership)) {
 			let transform = entity.get(Transform)
 
-			ServerSystem.host.sendAll(JSON.stringify({
+			ServerSystem.host.send(JSON.stringify({
 				type: "position",
 				data: {
 					id: entity.id,
@@ -28,8 +31,8 @@ export class ServerSystem extends System {
 		}
 	}
 
-	receive(_, info) {
-		info = JSON.parse(info)
+	receive(info) {
+		info = JSON.parse(info.message)
 
 		switch(info.type) {
 			case "position":
@@ -46,13 +49,10 @@ export class ClientSystem extends System {
 
 	constructor() {
 		super()
-		ClientSystem.guest.onReceive = this.receive
+		ClientSystem.guest.on("recieve", this.receive)
 	}
 
 	update() {
-		if(!ClientSystem.guest.isConnected)
-			return
-
 		for(let entity of Entity.find(Transform, Ownership)) {
 			let transform = entity.get(Transform)
 
@@ -68,7 +68,7 @@ export class ClientSystem extends System {
 	}
 
 	receive(info) {
-		info = JSON.parse(info)
+		info = JSON.parse(info.message)
 
 		switch(info.type) {
 			case "position":

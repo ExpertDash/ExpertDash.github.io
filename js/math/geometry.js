@@ -1,67 +1,64 @@
-import Vector3 from "./vec3.js"
-
-export default class Geometry {
-	/**
-	 * Determmines whether the points are colinear, clockwise, or counterclockwise
-	 * @param {Vector3} a Point 1
-	 * @param {Vector3} b Point 2
-	 * @param {Vector3} c Point 3
-	 * @returns {number} 0 if colinear, > 0 if cc, or < 0 if ccw
-	 */
-	static direction(a, b, c) {
-		return Math.sign((b.y - a.y) * (c.x - b.x) - (b.x - a.x) * (c.y - b.y))
-	}
-
-	/**
-	 * @param {[Vector3, Vector3]} l Line
-	 * @param {Vector3} p Point
-	 * @returns {boolean} Whether the point is on the line
-	 */
-	static on(l, p) {
-		let [ls, le] = l
-		return Math.min(ls.x, le.x) <= p.x && p.x <= Math.max(ls.x, le.x) &&
-			Math.min(ls.y, le.y) <= p.y && p.y <= Math.max(ls.y, le.y)
-	}
-
-	/**
-	 * @param {[Vector3, Vector3]} l1 Line 1
-	 * @param {[Vector3, Vector3]} l2 Line 2
-	 * @returns {Vector3} Intersection point between lines 1 and 2. NaN vector if none
-	 */
-	static intersection(l1, l2) {
-		let [s1, e1] = l1
-		let [s2, e2] = l2
-		let [d1, d2] = [e1.sub(s1), e2.sub(s2)]
-
-		let u = s2.sub(s1).cross2d(d2.div(d1.cross2d(d2)))
-		let v = s2.sub(s1).cross2d(d1.div(d1.cross2d(d2)))
-
-		if(d1.cross2d(d2) == 0 && s2.sub(s1).cross2d(d1) == 0) {
-			let a = s2.sub(s1).dot(d1.div(d1.dot(d1)))
-			let b = a + d2.dot(d1.div(d1.dot(d1)))
-
-			let t0 = Math.min(a, b)
-			let t1 = Math.max(a, b)
-
-			return (t0 <= 0 && 0 <= t1) ||
-				(0 <= t0 && t1 <= 1) ||
-				(t0 <= 1 && 1 <= t1) ? new Vector3(u, v) : new Vector3(NaN, NaN)
-		}
-
-		if(d2.cross2d(d1) == 0 && s2.sub(s1).cross2d(d1) != 0)
-			return new Vector3(NaN, NaN)
-
-		return d2.cross2d(d1) != 0 &&
-			0 <= u && u <= 1 &&
-			0 <= v && v <= 1 ? new Vector3(u, v) : new Vector3(NaN, NaN)
-	}
-
-	/**
-	 * @param {[Vector3, Vector3]} l1 Line 1
-	 * @param {[Vector3, Vector3]} l2 Line 2
-	 * @returns {boolean} Whether line 1 intersects line 2
-	 */
-	static intersects(l1, l2) {
-		return !Geometry.intersection(l1, l2).isNan
-	}
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const vec3_js_1 = __importDefault(require("./vec3.js"));
+class Geometry {
+    /**
+     * Determines whether the points are colinear, clockwise, or counterclockwise
+     * @param a Point 1
+     * @param b Point 2
+     * @param c Point 3
+     * @returns 0 if colinear, > 0 if cc, or < 0 if ccw
+     */
+    static direction(a, b, c) {
+        return Math.sign((b.y - a.y) * (c.x - b.x) - (b.x - a.x) * (c.y - b.y));
+    }
+    /**
+     * @param l Line
+     * @param p Point
+     * @returns Whether the point is on the line
+     */
+    static on(l, p) {
+        let [ls, le] = l;
+        return Math.min(ls.x, le.x) <= p.x && p.x <= Math.max(ls.x, le.x)
+            && Math.min(ls.y, le.y) <= p.y && p.y <= Math.max(ls.y, le.y);
+    }
+    /**
+     * @param l1 Line 1
+     * @param l2 Line 2
+     * @returns Intersection point between lines 1 and 2. NaN vector if none
+     */
+    static intersection(l1, l2) {
+        let [s1, e1] = l1;
+        let [s2, e2] = l2;
+        let [d1, d2] = [e1.sub(s1), e2.sub(s2)];
+        let u = s2.sub(s1).cross2d(d2.div(d1.cross2d(d2)));
+        let v = s2.sub(s1).cross2d(d1.div(d1.cross2d(d2)));
+        if (d1.cross2d(d2) == 0 && s2.sub(s1).cross2d(d1) == 0) {
+            let a = s2.sub(s1).dot(d1.div(d1.dot(d1)));
+            let b = a + d2.dot(d1.div(d1.dot(d1)));
+            let t0 = Math.min(a, b);
+            let t1 = Math.max(a, b);
+            return (t0 <= 0 && 0 <= t1) ||
+                (0 <= t0 && t1 <= 1) ||
+                (t0 <= 1 && 1 <= t1) ? new vec3_js_1.default(u, v) : new vec3_js_1.default(NaN, NaN);
+        }
+        if (d2.cross2d(d1) == 0 && s2.sub(s1).cross2d(d1) != 0)
+            return new vec3_js_1.default(NaN, NaN);
+        return d2.cross2d(d1) != 0 &&
+            0 <= u && u <= 1 &&
+            0 <= v && v <= 1 ? new vec3_js_1.default(u, v) : new vec3_js_1.default(NaN, NaN);
+    }
+    /**
+     * @param l1 Line 1
+     * @param l2 Line 2
+     * @returns Whether line 1 intersects line 2
+     */
+    static intersects(l1, l2) {
+        return !Geometry.intersection(l1, l2).isNan;
+    }
 }
+exports.default = Geometry;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2VvbWV0cnkuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvbWF0aC9nZW9tZXRyeS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7OztBQUFBLHdEQUErQjtBQUkvQixNQUE4QixRQUFRO0lBQ3JDOzs7Ozs7T0FNRztJQUNJLE1BQU0sQ0FBQyxTQUFTLENBQUMsQ0FBVSxFQUFFLENBQVUsRUFBRSxDQUFVO1FBQ3pELE9BQU8sSUFBSSxDQUFDLElBQUksQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxDQUFDLENBQUMsR0FBRyxDQUFDLENBQUMsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxDQUFDLENBQUMsR0FBRyxDQUFDLENBQUMsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUE7SUFDeEUsQ0FBQztJQUVEOzs7O09BSUc7SUFDSSxNQUFNLENBQUMsRUFBRSxDQUFDLENBQU8sRUFBRSxDQUFVO1FBQ25DLElBQUksQ0FBQyxFQUFFLEVBQUUsRUFBRSxDQUFDLEdBQUcsQ0FBQyxDQUFBO1FBQ2hCLE9BQU8sSUFBSSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxDQUFDLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDLElBQUksSUFBSSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxDQUFDLENBQUM7ZUFDN0QsSUFBSSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxDQUFDLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDLElBQUksSUFBSSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQTtJQUMvRCxDQUFDO0lBRUQ7Ozs7T0FJRztJQUNJLE1BQU0sQ0FBQyxZQUFZLENBQUMsRUFBUSxFQUFFLEVBQVE7UUFDNUMsSUFBSSxDQUFDLEVBQUUsRUFBRSxFQUFFLENBQUMsR0FBRyxFQUFFLENBQUE7UUFDakIsSUFBSSxDQUFDLEVBQUUsRUFBRSxFQUFFLENBQUMsR0FBRyxFQUFFLENBQUE7UUFDakIsSUFBSSxDQUFDLEVBQUUsRUFBRSxFQUFFLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLEVBQUUsRUFBRSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsQ0FBQyxDQUFBO1FBRXZDLElBQUksQ0FBQyxHQUFHLEVBQUUsQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLENBQUMsT0FBTyxDQUFDLEVBQUUsQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLE9BQU8sQ0FBQyxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUE7UUFDbEQsSUFBSSxDQUFDLEdBQUcsRUFBRSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsQ0FBQyxPQUFPLENBQUMsRUFBRSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsT0FBTyxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQTtRQUVsRCxJQUFHLEVBQUUsQ0FBQyxPQUFPLENBQUMsRUFBRSxDQUFDLElBQUksQ0FBQyxJQUFJLEVBQUUsQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLENBQUMsT0FBTyxDQUFDLEVBQUUsQ0FBQyxJQUFJLENBQUMsRUFBRTtZQUN0RCxJQUFJLENBQUMsR0FBRyxFQUFFLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFBO1lBQzFDLElBQUksQ0FBQyxHQUFHLENBQUMsR0FBRyxFQUFFLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUE7WUFFdEMsSUFBSSxFQUFFLEdBQUcsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUE7WUFDdkIsSUFBSSxFQUFFLEdBQUcsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUE7WUFFdkIsT0FBTyxDQUFDLEVBQUUsSUFBSSxDQUFDLElBQUksQ0FBQyxJQUFJLEVBQUUsQ0FBQztnQkFDMUIsQ0FBQyxDQUFDLElBQUksRUFBRSxJQUFJLEVBQUUsSUFBSSxDQUFDLENBQUM7Z0JBQ3BCLENBQUMsRUFBRSxJQUFJLENBQUMsSUFBSSxDQUFDLElBQUksRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFDLElBQUksaUJBQU8sQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLElBQUksaUJBQU8sQ0FBQyxHQUFHLEVBQUUsR0FBRyxDQUFDLENBQUE7U0FDakU7UUFFRCxJQUFHLEVBQUUsQ0FBQyxPQUFPLENBQUMsRUFBRSxDQUFDLElBQUksQ0FBQyxJQUFJLEVBQUUsQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLENBQUMsT0FBTyxDQUFDLEVBQUUsQ0FBQyxJQUFJLENBQUM7WUFDcEQsT0FBTyxJQUFJLGlCQUFPLENBQUMsR0FBRyxFQUFFLEdBQUcsQ0FBQyxDQUFBO1FBRTdCLE9BQU8sRUFBRSxDQUFDLE9BQU8sQ0FBQyxFQUFFLENBQUMsSUFBSSxDQUFDO1lBQ3pCLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUM7WUFDaEIsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxDQUFDLENBQUMsQ0FBQyxJQUFJLGlCQUFPLENBQUMsQ0FBQyxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxJQUFJLGlCQUFPLENBQUMsR0FBRyxFQUFFLEdBQUcsQ0FBQyxDQUFBO0lBQzlELENBQUM7SUFFRDs7OztPQUlHO0lBQ0ksTUFBTSxDQUFDLFVBQVUsQ0FBQyxFQUFRLEVBQUUsRUFBUTtRQUMxQyxPQUFPLENBQUMsUUFBUSxDQUFDLFlBQVksQ0FBQyxFQUFFLEVBQUUsRUFBRSxDQUFDLENBQUMsS0FBSyxDQUFBO0lBQzVDLENBQUM7Q0FDRDtBQWhFRCwyQkFnRUMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgVmVjdG9yMyBmcm9tIFwiLi92ZWMzLmpzXCJcclxuXHJcbnR5cGUgTGluZSA9IFtWZWN0b3IzLCBWZWN0b3IzXVxyXG5cclxuZXhwb3J0IGRlZmF1bHQgYWJzdHJhY3QgY2xhc3MgR2VvbWV0cnkge1xyXG5cdC8qKlxyXG5cdCAqIERldGVybWluZXMgd2hldGhlciB0aGUgcG9pbnRzIGFyZSBjb2xpbmVhciwgY2xvY2t3aXNlLCBvciBjb3VudGVyY2xvY2t3aXNlXHJcblx0ICogQHBhcmFtIGEgUG9pbnQgMVxyXG5cdCAqIEBwYXJhbSBiIFBvaW50IDJcclxuXHQgKiBAcGFyYW0gYyBQb2ludCAzXHJcblx0ICogQHJldHVybnMgMCBpZiBjb2xpbmVhciwgPiAwIGlmIGNjLCBvciA8IDAgaWYgY2N3XHJcblx0ICovXHJcblx0cHVibGljIHN0YXRpYyBkaXJlY3Rpb24oYTogVmVjdG9yMywgYjogVmVjdG9yMywgYzogVmVjdG9yMyk6IG51bWJlciB7XHJcblx0XHRyZXR1cm4gTWF0aC5zaWduKChiLnkgLSBhLnkpICogKGMueCAtIGIueCkgLSAoYi54IC0gYS54KSAqIChjLnkgLSBiLnkpKVxyXG5cdH1cclxuXHJcblx0LyoqXHJcblx0ICogQHBhcmFtIGwgTGluZVxyXG5cdCAqIEBwYXJhbSBwIFBvaW50XHJcblx0ICogQHJldHVybnMgV2hldGhlciB0aGUgcG9pbnQgaXMgb24gdGhlIGxpbmVcclxuXHQgKi9cclxuXHRwdWJsaWMgc3RhdGljIG9uKGw6IExpbmUsIHA6IFZlY3RvcjMpOiBib29sZWFuIHtcclxuXHRcdGxldCBbbHMsIGxlXSA9IGxcclxuXHRcdHJldHVybiBNYXRoLm1pbihscy54LCBsZS54KSA8PSBwLnggJiYgcC54IDw9IE1hdGgubWF4KGxzLngsIGxlLngpXHJcblx0XHRcdCYmIE1hdGgubWluKGxzLnksIGxlLnkpIDw9IHAueSAmJiBwLnkgPD0gTWF0aC5tYXgobHMueSwgbGUueSlcclxuXHR9XHJcblxyXG5cdC8qKlxyXG5cdCAqIEBwYXJhbSBsMSBMaW5lIDFcclxuXHQgKiBAcGFyYW0gbDIgTGluZSAyXHJcblx0ICogQHJldHVybnMgSW50ZXJzZWN0aW9uIHBvaW50IGJldHdlZW4gbGluZXMgMSBhbmQgMi4gTmFOIHZlY3RvciBpZiBub25lXHJcblx0ICovXHJcblx0cHVibGljIHN0YXRpYyBpbnRlcnNlY3Rpb24obDE6IExpbmUsIGwyOiBMaW5lKTogVmVjdG9yMyB7XHJcblx0XHRsZXQgW3MxLCBlMV0gPSBsMVxyXG5cdFx0bGV0IFtzMiwgZTJdID0gbDJcclxuXHRcdGxldCBbZDEsIGQyXSA9IFtlMS5zdWIoczEpLCBlMi5zdWIoczIpXVxyXG5cclxuXHRcdGxldCB1ID0gczIuc3ViKHMxKS5jcm9zczJkKGQyLmRpdihkMS5jcm9zczJkKGQyKSkpXHJcblx0XHRsZXQgdiA9IHMyLnN1YihzMSkuY3Jvc3MyZChkMS5kaXYoZDEuY3Jvc3MyZChkMikpKVxyXG5cclxuXHRcdGlmKGQxLmNyb3NzMmQoZDIpID09IDAgJiYgczIuc3ViKHMxKS5jcm9zczJkKGQxKSA9PSAwKSB7XHJcblx0XHRcdGxldCBhID0gczIuc3ViKHMxKS5kb3QoZDEuZGl2KGQxLmRvdChkMSkpKVxyXG5cdFx0XHRsZXQgYiA9IGEgKyBkMi5kb3QoZDEuZGl2KGQxLmRvdChkMSkpKVxyXG5cclxuXHRcdFx0bGV0IHQwID0gTWF0aC5taW4oYSwgYilcclxuXHRcdFx0bGV0IHQxID0gTWF0aC5tYXgoYSwgYilcclxuXHJcblx0XHRcdHJldHVybiAodDAgPD0gMCAmJiAwIDw9IHQxKSB8fFxyXG5cdFx0XHRcdCgwIDw9IHQwICYmIHQxIDw9IDEpIHx8XHJcblx0XHRcdFx0KHQwIDw9IDEgJiYgMSA8PSB0MSkgPyBuZXcgVmVjdG9yMyh1LCB2KSA6IG5ldyBWZWN0b3IzKE5hTiwgTmFOKVxyXG5cdFx0fVxyXG5cclxuXHRcdGlmKGQyLmNyb3NzMmQoZDEpID09IDAgJiYgczIuc3ViKHMxKS5jcm9zczJkKGQxKSAhPSAwKVxyXG5cdFx0XHRyZXR1cm4gbmV3IFZlY3RvcjMoTmFOLCBOYU4pXHJcblxyXG5cdFx0cmV0dXJuIGQyLmNyb3NzMmQoZDEpICE9IDAgJiZcclxuXHRcdFx0MCA8PSB1ICYmIHUgPD0gMSAmJlxyXG5cdFx0XHQwIDw9IHYgJiYgdiA8PSAxID8gbmV3IFZlY3RvcjModSwgdikgOiBuZXcgVmVjdG9yMyhOYU4sIE5hTilcclxuXHR9XHJcblxyXG5cdC8qKlxyXG5cdCAqIEBwYXJhbSBsMSBMaW5lIDFcclxuXHQgKiBAcGFyYW0gbDIgTGluZSAyXHJcblx0ICogQHJldHVybnMgV2hldGhlciBsaW5lIDEgaW50ZXJzZWN0cyBsaW5lIDJcclxuXHQgKi9cclxuXHRwdWJsaWMgc3RhdGljIGludGVyc2VjdHMobDE6IExpbmUsIGwyOiBMaW5lKTogYm9vbGVhbiB7XHJcblx0XHRyZXR1cm4gIUdlb21ldHJ5LmludGVyc2VjdGlvbihsMSwgbDIpLmlzTmFuXHJcblx0fVxyXG59Il19

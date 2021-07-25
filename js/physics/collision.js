@@ -1,25 +1,10 @@
-import Vector3 from "../math/vec3.js"
-import Entity from "../ecs/entity.js"
-
-export default class Collision {
-	/**
-	 * Id of entity collided with
-	 * @type {number}
-	 */
-	entityId
-
-	/**
-	 * Collision points
-	 * @type {Vector3[]}
-	 */
-	points
-
-	/**
-	 * @param {Entity} entity 
-	 * @param {Vector3[]} points 
-	 */
-	constructor(entity, points) {
-		this.entityId = entity.id
-		this.points = points
-	}
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class Collision {
+    constructor(entity, points) {
+        this.entityId = entity.id;
+        this.points = points;
+    }
 }
+exports.default = Collision;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29sbGlzaW9uLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL3BoeXNpY3MvY29sbGlzaW9uLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBR0EsTUFBcUIsU0FBUztJQU83QixZQUFtQixNQUFjLEVBQUUsTUFBc0M7UUFDeEUsSUFBSSxDQUFDLFFBQVEsR0FBRyxNQUFNLENBQUMsRUFBRSxDQUFBO1FBQ3pCLElBQUksQ0FBQyxNQUFNLEdBQUcsTUFBTSxDQUFBO0lBQ3JCLENBQUM7Q0FDRDtBQVhELDRCQVdDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFZlY3RvcjMgZnJvbSBcIi4uL21hdGgvdmVjMy5qc1wiXHJcbmltcG9ydCBFbnRpdHkgZnJvbSBcIi4uL2Vjcy9lbnRpdHkuanNcIlxyXG5cclxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgQ29sbGlzaW9uIHtcclxuXHQvKiogSWQgb2YgZW50aXR5IGNvbGxpZGVkIHdpdGggKi9cclxuXHRwdWJsaWMgcmVhZG9ubHkgZW50aXR5SWQ6IG51bWJlclxyXG5cclxuXHQvKiogQ29sbGlzaW9uIHBvaW50cyAqL1xyXG5cdHB1YmxpYyByZWFkb25seSBwb2ludHM6IFJlYWRvbmx5QXJyYXk8VmVjdG9yMz5cclxuXHJcblx0cHVibGljIGNvbnN0cnVjdG9yKGVudGl0eTogRW50aXR5LCBwb2ludHM6IFZlY3RvcjNbXSB8IHJlYWRvbmx5IFZlY3RvcjNbXSkge1xyXG5cdFx0dGhpcy5lbnRpdHlJZCA9IGVudGl0eS5pZFxyXG5cdFx0dGhpcy5wb2ludHMgPSBwb2ludHNcclxuXHR9XHJcbn0iXX0=

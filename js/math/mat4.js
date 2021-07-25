@@ -1,166 +1,84 @@
-import Vector3 from "./vec3.js"
-
-export default class Matrix4x4 {
-	/**
-	 * @param {...number} value 
-	 */
-	constructor(...value) {
-		this.value = value
-	}
-
-	[Symbol.iterator]() {
-		return this.value.values()
-	}
-
-	static get identity() { return identity }
-	static get zero() { return zero }
-
-	/**
-	 * @param {number} i 
-	 */
-	getRow(i) {
-		return [this.value[4 * i], this.value[4 * i + 1], this.value[4 * i + 2], this.value[4 * i + 3]]
-	}
-
-	/**
-	 * @param {number} j 
-	 */
-	getColumn(j) {
-		return [this.value[j], this.value[4 + j], this.value[8 + j], this.value[12 + j]]
-	}
-
-	/**
-	 * @param {Matrix4x4} other 
-	 * @returns {Matrix4x4}
-	 */
-	mul(other) {
-		const [m, n] = [4, 4]
-		let value = new Array(m * n)
-
-		for(let i = m - 1; i >= 0; i--)
-			for(let j = n - 1; j >= 0; j--)
-				value[4 * i + j] = this.#dot4(this.getRow(i), other.getColumn(j))
-
-		return new Matrix4x4(...value)
-	}
-
-	/**
-	 * @param {[number, number, number, number]} vec 
-	 * @returns {[number, number, number, number]}
-	 */
-	mulVec(vec) {
-		return [
-			this.#dot4(this.getRow(0), vec),
-			this.#dot4(this.getRow(1), vec),
-			this.#dot4(this.getRow(2), vec),
-			this.#dot4(this.getRow(3), vec)
-		]
-	}
-
-	/**
-	 * @returns {Matrix4x4}
-	 */
-	transpose() {
-		return new Matrix4x4(
-			...this.getColumn(0),
-			...this.getColumn(1),
-			...this.getColumn(2),
-			...this.getColumn(3)
-		)
-	}
-
-	toString() {
-		return `[[${this.getRow(0)}],[${this.getRow(1)}],[${this.getRow(2)}],[${this.getRow(3)}]]`
-	}
-
-	/**
-	 * @param {number[]} lhs 
-	 * @param {number[]} rhs 
-	 */
-	#dot4 = (lhs, rhs) => {
-		return lhs[0] * rhs[0] + lhs[1] * rhs[1] + lhs[2] * rhs[2] + lhs[3] * rhs[3]
-	}
-
-	/**
-	 * @param {number} fov Field of view in radians
-	 * @param {number} aspect Aspect ratio
-	 * @param {number} near Near clipping field
-	 * @param {number} far Far clipping field
-	 */
-	static createPerspective(fov, aspect, near, far) {
-		const a = 1 / Math.tan(fov / 2)
-		const b = 1 / (near - far)
-
-		return new Matrix4x4(
-			a / aspect, 0, 0, 0,
-			0, a, 0, 0,
-			0, 0, (far + near) * b, 2 * far * near * b,
-			0, 0, -1, 0
-		)
-	}
-
-	/**
-	 * @param {number} width Width
-	 * @param {number} height Height
-	 * @param {number} near Near clipping field
-	 * @param {number} far Far clipping field
-	 */
-	static createOrtho(width, height, near, far) {
-		let [l, r] = [-width / 2, width / 2]
-		let [t, b] = [height / 2, -height / 2]
-
-		return new Matrix4x4(
-			2 / (r - l), 0, 0, -(r + l) / (r - l),
-			0, 2 / (t - b), 0, -(t + b) / (t - b),
-			0, 0, -2 / (far - near), -(far + near) / (far - near),
-			0, 0, 0, 1
-		)
-	}
-
-	/**
-	 * @param {Vector3} p Global position
-	 * @param {number} r Global rotation
-	 * @param {Vector3} s Global scale
-	 * @return {Matrix4x4} Translation, rotation, scale matrix
-	 */
-	static trs(p, r, s) {
-		return new Matrix4x4(
-			1, 0, 0, p.x,
-			0, 1, 0, p.y,
-			0, 0, 1, p.z,
-			0, 0, 0, 1
-		).mul(new Matrix4x4(
-			Math.cos(r), -Math.sin(r), 0, 0,
-			Math.sin(r), Math.cos(r), 0, 0,
-			0, 0, 1, 0,
-			0, 0, 0, 1
-		)).mul(new Matrix4x4(
-			s.x, 0, 0, 0,
-			0, s.y, 0, 0,
-			0, 0, s.z, 0,
-			0, 0, 0, 1
-		))
-	}
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.mat4 = exports.Matrix4x4 = void 0;
+class Matrix4x4 {
+    constructor(...value) {
+        this.value = value;
+    }
+    static get identity() { return identity; }
+    static get zero() { return zero; }
+    getRow(i) {
+        return [this.value[4 * i], this.value[4 * i + 1], this.value[4 * i + 2], this.value[4 * i + 3]];
+    }
+    getColumn(j) {
+        return [this.value[j], this.value[4 + j], this.value[8 + j], this.value[12 + j]];
+    }
+    mul(other) {
+        const [m, n] = [4, 4];
+        let value = new Array(m * n);
+        for (let i = m - 1; i >= 0; i--)
+            for (let j = n - 1; j >= 0; j--)
+                value[4 * i + j] = Matrix4x4.dot4(this.getRow(i), other.getColumn(j));
+        return new Matrix4x4(...value);
+    }
+    mulVec(vec) {
+        return [
+            Matrix4x4.dot4(this.getRow(0), vec),
+            Matrix4x4.dot4(this.getRow(1), vec),
+            Matrix4x4.dot4(this.getRow(2), vec),
+            Matrix4x4.dot4(this.getRow(3), vec)
+        ];
+    }
+    transpose() {
+        return new Matrix4x4(...this.getColumn(0), ...this.getColumn(1), ...this.getColumn(2), ...this.getColumn(3));
+    }
+    toString() {
+        return `[[${this.getRow(0)}],[${this.getRow(1)}],[${this.getRow(2)}],[${this.getRow(3)}]]`;
+    }
+    [Symbol.iterator]() {
+        return this.value.values();
+    }
+    /**
+     * @param fov Field of view in radians
+     * @param aspect Aspect ratio
+     * @param near Near clipping field
+     * @param far Far clipping field
+     */
+    static createPerspective(fov, aspect, near, far) {
+        const a = 1 / Math.tan(fov / 2);
+        const b = 1 / (near - far);
+        return new Matrix4x4(a / aspect, 0, 0, 0, 0, a, 0, 0, 0, 0, (far + near) * b, 2 * far * near * b, 0, 0, -1, 0);
+    }
+    /**
+     * @param width Width
+     * @param height Height
+     * @param near Near clipping field
+     * @param far Far clipping field
+     */
+    static createOrtho(width, height, near, far) {
+        let [l, r] = [-width / 2, width / 2];
+        let [t, b] = [height / 2, -height / 2];
+        return new Matrix4x4(2 / (r - l), 0, 0, -(r + l) / (r - l), 0, 2 / (t - b), 0, -(t + b) / (t - b), 0, 0, -2 / (far - near), -(far + near) / (far - near), 0, 0, 0, 1);
+    }
+    /**
+     * @param p Global position
+     * @param r Global rotation
+     * @param s Global scale
+     * @return Translation, rotation, scale matrix
+     */
+    static trs(p, r, s) {
+        return new Matrix4x4(1, 0, 0, p.x, 0, 1, 0, p.y, 0, 0, 1, p.z, 0, 0, 0, 1).mul(new Matrix4x4(Math.cos(r), -Math.sin(r), 0, 0, Math.sin(r), Math.cos(r), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)).mul(new Matrix4x4(s.x, 0, 0, 0, 0, s.y, 0, 0, 0, 0, s.z, 0, 0, 0, 0, 1));
+    }
+    static dot4(lhs, rhs) {
+        return lhs[0] * rhs[0] + lhs[1] * rhs[1] + lhs[2] * rhs[2] + lhs[3] * rhs[3];
+    }
 }
-
-const identity = Object.freeze(new Matrix4x4(
-	1, 0, 0, 0,
-	0, 1, 0, 0,
-	0, 0, 1, 0,
-	0, 0, 0, 1
-))
-
-const zero = Object.freeze(new Matrix4x4(
-	0, 0, 0, 0,
-	0, 0, 0, 0,
-	0, 0, 0, 0,
-	0, 0, 0, 0
-))
-
-/**
- * @param {...number} value 
- * @returns {Matrix4x4}
- */
-export function mat4(...value) {
-	return new Matrix4x4(value)
+exports.Matrix4x4 = Matrix4x4;
+const identity = Object.freeze(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1));
+const zero = Object.freeze(mat4(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+function mat4(...value) {
+    return new Matrix4x4(...value);
 }
+exports.mat4 = mat4;
+exports.default = Matrix4x4;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWF0NC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9tYXRoL21hdDQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBR0EsTUFBYSxTQUFTO0lBR3JCLFlBQW1CLEdBQUcsS0FBZTtRQUNwQyxJQUFJLENBQUMsS0FBSyxHQUFHLEtBQUssQ0FBQTtJQUNuQixDQUFDO0lBRU0sTUFBTSxLQUFLLFFBQVEsS0FBMEIsT0FBTyxRQUFRLENBQUEsQ0FBQyxDQUFDO0lBQzlELE1BQU0sS0FBSyxJQUFJLEtBQTBCLE9BQU8sSUFBSSxDQUFBLENBQUMsQ0FBQztJQUV0RCxNQUFNLENBQUMsQ0FBUztRQUN0QixPQUFPLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLEVBQUUsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDLEdBQUcsQ0FBQyxHQUFHLENBQUMsQ0FBQyxFQUFFLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQyxHQUFHLENBQUMsR0FBRyxDQUFDLENBQUMsRUFBRSxJQUFJLENBQUMsS0FBSyxDQUFDLENBQUMsR0FBRyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQTtJQUNoRyxDQUFDO0lBRU0sU0FBUyxDQUFDLENBQVM7UUFDekIsT0FBTyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDLEVBQUUsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLEVBQUUsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLEVBQUUsSUFBSSxDQUFDLEtBQUssQ0FBQyxFQUFFLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQTtJQUNqRixDQUFDO0lBRU0sR0FBRyxDQUFDLEtBQWdCO1FBQzFCLE1BQU0sQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUE7UUFDckIsSUFBSSxLQUFLLEdBQUcsSUFBSSxL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QUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFDVixDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQ1YsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUNWLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FDVixDQUFDLENBQUE7QUFFRixNQUFNLElBQUksR0FBRyxNQUFNLENBQUMsTUFBTSxDQUFDLElBQUksQ0FDOUIsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUNWLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFDVixDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQ1YsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxDQUNWLENBQUMsQ0FBQTtBQUVGLFNBQWdCLElBQUksQ0FBQyxHQUFHLEtBQWU7SUFDdEMsT0FBTyxJQUFJLFNBQVMsQ0FBQyxHQUFHLEtBQUssQ0FBQyxDQUFBO0FBQy9CLENBQUM7QUFGRCxvQkFFQztBQUVELGtCQUFlLFNBQVMsQ0FBQSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBWZWN0b3IzIGZyb20gXCIuL3ZlYzMuanNcIlxyXG50eXBlIFZlY3RvciA9IFtudW1iZXIsIG51bWJlciwgbnVtYmVyLCBudW1iZXJdXHJcblxyXG5leHBvcnQgY2xhc3MgTWF0cml4NHg0IHtcclxuXHRwcml2YXRlIHJlYWRvbmx5IHZhbHVlOiBudW1iZXJbXVxyXG5cclxuXHRwdWJsaWMgY29uc3RydWN0b3IoLi4udmFsdWU6IG51bWJlcltdKSB7XHJcblx0XHR0aGlzLnZhbHVlID0gdmFsdWVcclxuXHR9XHJcblxyXG5cdHB1YmxpYyBzdGF0aWMgZ2V0IGlkZW50aXR5KCk6IFJlYWRvbmx5PE1hdHJpeDR4ND4geyByZXR1cm4gaWRlbnRpdHkgfVxyXG5cdHB1YmxpYyBzdGF0aWMgZ2V0IHplcm8oKTogUmVhZG9ubHk8TWF0cml4NHg0PiB7IHJldHVybiB6ZXJvIH1cclxuXHJcblx0cHVibGljIGdldFJvdyhpOiBudW1iZXIpOiBWZWN0b3Ige1xyXG5cdFx0cmV0dXJuIFt0aGlzLnZhbHVlWzQgKiBpXSwgdGhpcy52YWx1ZVs0ICogaSArIDFdLCB0aGlzLnZhbHVlWzQgKiBpICsgMl0sIHRoaXMudmFsdWVbNCAqIGkgKyAzXV1cclxuXHR9XHJcblxyXG5cdHB1YmxpYyBnZXRDb2x1bW4oajogbnVtYmVyKTogVmVjdG9yIHtcclxuXHRcdHJldHVybiBbdGhpcy52YWx1ZVtqXSwgdGhpcy52YWx1ZVs0ICsgal0sIHRoaXMudmFsdWVbOCArIGpdLCB0aGlzLnZhbHVlWzEyICsgal1dXHJcblx0fVxyXG5cclxuXHRwdWJsaWMgbXVsKG90aGVyOiBNYXRyaXg0eDQpOiBNYXRyaXg0eDQge1xyXG5cdFx0Y29uc3QgW20sIG5dID0gWzQsIDRdXHJcblx0XHRsZXQgdmFsdWUgPSBuZXcgQXJyYXk8bnVtYmVyPihtICogbilcclxuXHJcblx0XHRmb3IobGV0IGkgPSBtIC0gMTsgaSA+PSAwOyBpLS0pXHJcblx0XHRcdGZvcihsZXQgaiA9IG4gLSAxOyBqID49IDA7IGotLSlcclxuXHRcdFx0XHR2YWx1ZVs0ICogaSArIGpdID0gTWF0cml4NHg0LmRvdDQodGhpcy5nZXRSb3coaSksIG90aGVyLmdldENvbHVtbihqKSlcclxuXHJcblx0XHRyZXR1cm4gbmV3IE1hdHJpeDR4NCguLi52YWx1ZSlcclxuXHR9XHJcblxyXG5cdHB1YmxpYyBtdWxWZWModmVjOiBWZWN0b3IpOiBWZWN0b3Ige1xyXG5cdFx0cmV0dXJuIFtcclxuXHRcdFx0TWF0cml4NHg0LmRvdDQodGhpcy5nZXRSb3coMCksIHZlYyksXHJcblx0XHRcdE1hdHJpeDR4NC5kb3Q0KHRoaXMuZ2V0Um93KDEpLCB2ZWMpLFxyXG5cdFx0XHRNYXRyaXg0eDQuZG90NCh0aGlzLmdldFJvdygyKSwgdmVjKSxcclxuXHRcdFx0TWF0cml4NHg0LmRvdDQodGhpcy5nZXRSb3coMyksIHZlYylcclxuXHRcdF1cclxuXHR9XHJcblxyXG5cdHB1YmxpYyB0cmFuc3Bvc2UoKTogTWF0cml4NHg0IHtcclxuXHRcdHJldHVybiBuZXcgTWF0cml4NHg0KFxyXG5cdFx0XHQuLi50aGlzLmdldENvbHVtbigwKSxcclxuXHRcdFx0Li4udGhpcy5nZXRDb2x1bW4oMSksXHJcblx0XHRcdC4uLnRoaXMuZ2V0Q29sdW1uKDIpLFxyXG5cdFx0XHQuLi50aGlzLmdldENvbHVtbigzKVxyXG5cdFx0KVxyXG5cdH1cclxuXHJcblx0cHVibGljIHRvU3RyaW5nKCk6IHN0cmluZyB7XHJcblx0XHRyZXR1cm4gYFtbJHt0aGlzLmdldFJvdygwKX1dLFske3RoaXMuZ2V0Um93KDEpfV0sWyR7dGhpcy5nZXRSb3coMil9XSxbJHt0aGlzLmdldFJvdygzKX1dXWBcclxuXHR9XHJcblxyXG5cdHB1YmxpYyBbU3ltYm9sLml0ZXJhdG9yXSgpIHtcclxuXHRcdHJldHVybiB0aGlzLnZhbHVlLnZhbHVlcygpXHJcblx0fVxyXG5cclxuXHQvKipcclxuXHQgKiBAcGFyYW0gZm92IEZpZWxkIG9mIHZpZXcgaW4gcmFkaWFuc1xyXG5cdCAqIEBwYXJhbSBhc3BlY3QgQXNwZWN0IHJhdGlvXHJcblx0ICogQHBhcmFtIG5lYXIgTmVhciBjbGlwcGluZyBmaWVsZFxyXG5cdCAqIEBwYXJhbSBmYXIgRmFyIGNsaXBwaW5nIGZpZWxkXHJcblx0ICovXHJcblx0cHVibGljIHN0YXRpYyBjcmVhdGVQZXJzcGVjdGl2ZShmb3Y6IG51bWJlciwgYXNwZWN0OiBudW1iZXIsIG5lYXI6IG51bWJlciwgZmFyOiBudW1iZXIpIHtcclxuXHRcdGNvbnN0IGEgPSAxIC8gTWF0aC50YW4oZm92IC8gMilcclxuXHRcdGNvbnN0IGIgPSAxIC8gKG5lYXIgLSBmYXIpXHJcblxyXG5cdFx0cmV0dXJuIG5ldyBNYXRyaXg0eDQoXHJcblx0XHRcdGEgLyBhc3BlY3QsIDAsIDAsIDAsXHJcblx0XHRcdDAsIGEsIDAsIDAsXHJcblx0XHRcdDAsIDAsIChmYXIgKyBuZWFyKSAqIGIsIDIgKiBmYXIgKiBuZWFyICogYixcclxuXHRcdFx0MCwgMCwgLTEsIDBcclxuXHRcdClcclxuXHR9XHJcblxyXG5cdC8qKlxyXG5cdCAqIEBwYXJhbSB3aWR0aCBXaWR0aFxyXG5cdCAqIEBwYXJhbSBoZWlnaHQgSGVpZ2h0XHJcblx0ICogQHBhcmFtIG5lYXIgTmVhciBjbGlwcGluZyBmaWVsZFxyXG5cdCAqIEBwYXJhbSBmYXIgRmFyIGNsaXBwaW5nIGZpZWxkXHJcblx0ICovXHJcblx0cHVibGljIHN0YXRpYyBjcmVhdGVPcnRobyh3aWR0aDogbnVtYmVyLCBoZWlnaHQ6IG51bWJlciwgbmVhcjogbnVtYmVyLCBmYXI6IG51bWJlcikge1xyXG5cdFx0bGV0IFtsLCByXSA9IFstd2lkdGggLyAyLCB3aWR0aCAvIDJdXHJcblx0XHRsZXQgW3QsIGJdID0gW2hlaWdodCAvIDIsIC1oZWlnaHQgLyAyXVxyXG5cclxuXHRcdHJldHVybiBuZXcgTWF0cml4NHg0KFxyXG5cdFx0XHQyIC8gKHIgLSBsKSwgMCwgMCwgLShyICsgbCkgLyAociAtIGwpLFxyXG5cdFx0XHQwLCAyIC8gKHQgLSBiKSwgMCwgLSh0ICsgYikgLyAodCAtIGIpLFxyXG5cdFx0XHQwLCAwLCAtMiAvIChmYXIgLSBuZWFyKSwgLShmYXIgKyBuZWFyKSAvIChmYXIgLSBuZWFyKSxcclxuXHRcdFx0MCwgMCwgMCwgMVxyXG5cdFx0KVxyXG5cdH1cclxuXHJcblx0LyoqXHJcblx0ICogQHBhcmFtIHAgR2xvYmFsIHBvc2l0aW9uXHJcblx0ICogQHBhcmFtIHIgR2xvYmFsIHJvdGF0aW9uXHJcblx0ICogQHBhcmFtIHMgR2xvYmFsIHNjYWxlXHJcblx0ICogQHJldHVybiBUcmFuc2xhdGlvbiwgcm90YXRpb24sIHNjYWxlIG1hdHJpeFxyXG5cdCAqL1xyXG5cdHB1YmxpYyBzdGF0aWMgdHJzKHA6IFZlY3RvcjMsIHI6IG51bWJlciwgczogVmVjdG9yMyk6IE1hdHJpeDR4NCB7XHJcblx0XHRyZXR1cm4gbmV3IE1hdHJpeDR4NChcclxuXHRcdFx0MSwgMCwgMCwgcC54LFxyXG5cdFx0XHQwLCAxLCAwLCBwLnksXHJcblx0XHRcdDAsIDAsIDEsIHAueixcclxuXHRcdFx0MCwgMCwgMCwgMVxyXG5cdFx0KS5tdWwobmV3IE1hdHJpeDR4NChcclxuXHRcdFx0TWF0aC5jb3MociksIC1NYXRoLnNpbihyKSwgMCwgMCxcclxuXHRcdFx0TWF0aC5zaW4ociksIE1hdGguY29zKHIpLCAwLCAwLFxyXG5cdFx0XHQwLCAwLCAxLCAwLFxyXG5cdFx0XHQwLCAwLCAwLCAxXHJcblx0XHQpKS5tdWwobmV3IE1hdHJpeDR4NChcclxuXHRcdFx0cy54LCAwLCAwLCAwLFxyXG5cdFx0XHQwLCBzLnksIDAsIDAsXHJcblx0XHRcdDAsIDAsIHMueiwgMCxcclxuXHRcdFx0MCwgMCwgMCwgMVxyXG5cdFx0KSlcclxuXHR9XHJcblxyXG5cdHByaXZhdGUgc3RhdGljIGRvdDQobGhzOiBbbnVtYmVyLCBudW1iZXIsIG51bWJlciwgbnVtYmVyXSwgcmhzOiBbbnVtYmVyLCBudW1iZXIsIG51bWJlciwgbnVtYmVyXSkge1xyXG5cdFx0cmV0dXJuIGxoc1swXSAqIHJoc1swXSArIGxoc1sxXSAqIHJoc1sxXSArIGxoc1syXSAqIHJoc1syXSArIGxoc1szXSAqIHJoc1szXVxyXG5cdH1cclxufVxyXG5cclxuY29uc3QgaWRlbnRpdHkgPSBPYmplY3QuZnJlZXplKG1hdDQoXHJcblx0MSwgMCwgMCwgMCxcclxuXHQwLCAxLCAwLCAwLFxyXG5cdDAsIDAsIDEsIDAsXHJcblx0MCwgMCwgMCwgMVxyXG4pKVxyXG5cclxuY29uc3QgemVybyA9IE9iamVjdC5mcmVlemUobWF0NChcclxuXHQwLCAwLCAwLCAwLFxyXG5cdDAsIDAsIDAsIDAsXHJcblx0MCwgMCwgMCwgMCxcclxuXHQwLCAwLCAwLCAwXHJcbikpXHJcblxyXG5leHBvcnQgZnVuY3Rpb24gbWF0NCguLi52YWx1ZTogbnVtYmVyW10pOiBNYXRyaXg0eDQge1xyXG5cdHJldHVybiBuZXcgTWF0cml4NHg0KC4uLnZhbHVlKVxyXG59XHJcblxyXG5leHBvcnQgZGVmYXVsdCBNYXRyaXg0eDQiXX0=

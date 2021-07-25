@@ -1,182 +1,142 @@
-export default class Vector3 {
-	/**
-	 * x-component
-	 * @type {number}
-	 */
-	x
-
-	/**
-	 * y-component
-	 * @type {number}
-	 */
-	y
-
-	/**
-	 * z-component
-	 * @type {number}
-	 */
-	z
-	
-	/**
-	 * @param {number} x x-component
-	 * @param {number} y y-component
-	 * @param {number} z z-component
-	 */
-	constructor(x = 0, y = 0, z = 0) {
-		this.x = x
-		this.y = y
-		this.z = z
-	}
-
-	/** Square magnitude */
-	get sqrMagnitude() {
-		return this.x * this.x + this.y * this.y + this.z * this.z
-	}
-
-	/** Magnitude */
-	get magnitude() {
-		return Math.sqrt(this.sqrMagnitude)
-	}
-
-	/** Normalized instance */
-	get normalized() {
-		return this.div(this.magnitude)
-	}
-
-	/** Inverse */
-	get inv() {
-		return new Vector3(1 / this.x, 1 / this.y, 1 / this.z)
-	}
-
-	/** Whether a component is NaN */
-	get isNan() {
-		return isNaN(this.x) || isNaN(this.y) || isNaN(this.z)
-	}
-
-	/** 4d vector array */
-	get xyzw() {
-		return [this.x, this.y, this.z, 1]
-	}
-
-	static get left() { return left }
-	static get up() { return up }
-	static get right() { return right }
-	static get down() { return down }
-	static get forward() { return forward }
-	static get back() { return back }
-	static get zero() { return zero }
-	static get one() { return one }
-
-	/**
-	 * @param {Vector3} other
-	 * @returns {Vector3} Vector resulting from addition
-	 */
-	add(other) {
-		return new Vector3(this.x + other.x, this.y + other.y, this.z + other.z)
-	}
-
-	/**
-	 * @param {Vector3} other
-	 * @returns {Vector3} Vector resulting from subtraction
-	 */
-	sub(other) {
-		return new Vector3(this.x - other.x, this.y - other.y, this.z - other.z)
-	}
-
-	/**
-	 * @param {number} scalar
-	 * @returns {Vector3} Vector resulting from scaling each component
-	 */
-	mul(scalar) {
-		return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar)
-	}
-
-	/**
-	 * @param {number} scalar
-	 * @returns {Vector3} Vector resulting from inversely scaling each component
-	 */
-	div(scalar) {
-		return new Vector3(this.x / scalar, this.y / scalar, this.z / scalar)
-	}
-
-	/**
-	 * @param {Vector3} other Vector to scale by
-	 * @returns {Vector3} Vector resulting from component-wise multiplication
-	 */
-	scale(other) {
-		return new Vector3(
-			this.x * other.x,
-			this.y * other.y,
-			this.z * other.z
-		)
-	}
-
-	/**
-	 * @param {Vector3} other Vector to dot with
-	 * @returns {number} Dot product
-	 */
-	dot(other) {
-		return this.x * other.x + this.y * other.y + this.z * this.z
-	}
-
-	/**
-	 * @param {Vector3} other Vector to cross with
-	 * @returns {Vector3} Cross product
-	 */
-	cross(other) {
-		return new Vector3(this.y * other.z - this.z * other.y, this.z * other.x - this.x * other.z, this.x * other.y - this.y * other.x)
-	}
-
-	/**
-	 * @param {Vector3} other Vector to cross with
-	 * @returns {number} Cross product
-	 */
-	cross2d(other) {
-		return this.x * other.y - this.y * other.x
-	}
-
-	/**
-	 * @returns {number[]} xyz array
-	 */
-	valueOf() {
-		return [this.x, this.y, this.z]
-	}
-
-	toString() {
-		return `(${parseFloat(this.x.toFixed(3))}, ${parseFloat(this.y.toFixed(3))}, ${parseFloat(this.z.toFixed(3))})`
-	}
-
-	/**
-	 * @param {Vector3} other Whether xyz values are identical
-	 */
-	equals(other) {
-		return other instanceof Vector3 && this.x === other.x && this.y === other.y && this.z === other.z
-	}
-
-	/**
-	 * @param {Vector3} from Point 1
-	 * @param {Vector3} to Point 2
-	 * @returns {number} Angle between the points in degrees
-	 */
-	static angle(from, to) {
-		return Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI
-	}
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.vec3 = exports.Vector3 = void 0;
+class Vector3 {
+    /**
+     * @param x x-component
+     * @param y y-component
+     * @param z z-component
+     */
+    constructor(x = 0, y = 0, z = 0) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    /** Square magnitude */
+    get sqrMagnitude() {
+        return this.x * this.x + this.y * this.y + this.z * this.z;
+    }
+    /** Magnitude */
+    get magnitude() {
+        return Math.sqrt(this.sqrMagnitude);
+    }
+    /** Normalized instance */
+    get normalized() {
+        return this.div(this.magnitude);
+    }
+    /** Inverse */
+    get inv() {
+        return new Vector3(1 / this.x, 1 / this.y, 1 / this.z);
+    }
+    /** Whether a component is NaN */
+    get isNan() {
+        return isNaN(this.x) || isNaN(this.y) || isNaN(this.z);
+    }
+    /** 4d vector array */
+    get xyzw() {
+        return [this.x, this.y, this.z, 1];
+    }
+    static get left() { return left; }
+    static get up() { return up; }
+    static get right() { return right; }
+    static get down() { return down; }
+    static get forward() { return forward; }
+    static get back() { return back; }
+    static get zero() { return zero; }
+    static get one() { return one; }
+    /**
+     * @returns Vector resulting from addition
+     */
+    add(other) {
+        return new Vector3(this.x + other.x, this.y + other.y, this.z + other.z);
+    }
+    /**
+     * @returns Vector resulting from subtraction
+     */
+    sub(other) {
+        return new Vector3(this.x - other.x, this.y - other.y, this.z - other.z);
+    }
+    /**
+     * @returns Vector resulting from scaling each component
+     */
+    mul(scalar) {
+        return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar);
+    }
+    /**
+     * @returns Vector resulting from inversely scaling each component
+     */
+    div(scalar) {
+        return new Vector3(this.x / scalar, this.y / scalar, this.z / scalar);
+    }
+    /**
+     * @param other Vector to scale by
+     * @returns Vector resulting from component-wise multiplication
+     */
+    scale(other) {
+        return new Vector3(this.x * other.x, this.y * other.y, this.z * other.z);
+    }
+    /**
+     * @param other Vector to dot with
+     * @returns Dot product
+     */
+    dot(other) {
+        return this.x * other.x + this.y * other.y + this.z * this.z;
+    }
+    /**
+     * @param other Vector to cross with
+     * @returns Cross product
+     */
+    cross(other) {
+        return new Vector3(this.y * other.z - this.z * other.y, this.z * other.x - this.x * other.z, this.x * other.y - this.y * other.x);
+    }
+    /**
+     * @param other Vector to cross with
+     * @returnsCross product
+     */
+    cross2d(other) {
+        return this.x * other.y - this.y * other.x;
+    }
+    /**
+     * @returns xyz array
+     */
+    valueOf() {
+        return [this.x, this.y, this.z];
+    }
+    toString() {
+        return `(${parseFloat(this.x.toFixed(3))}, ${parseFloat(this.y.toFixed(3))}, ${parseFloat(this.z.toFixed(3))})`;
+    }
+    /**
+     * @param other Whether xyz values are identical
+     */
+    equals(other) {
+        return other instanceof Vector3 && this.x === other.x && this.y === other.y && this.z === other.z;
+    }
+    /**
+     * @param from Point 1
+     * @param to Point 2
+     * @returns Angle between the points in degrees
+     */
+    static angle(from, to) {
+        return Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI;
+    }
 }
-
-const left = Object.freeze(new Vector3(-1, 0, 0))
-const up = Object.freeze(new Vector3(0, 1, 0))
-const right = Object.freeze(new Vector3(1, 0, 0))
-const down = Object.freeze(new Vector3(0, -1, 0))
-const forward = Object.freeze(new Vector3(0, 0, 1))
-const back = Object.freeze(new Vector3(0, 0, -1))
-const zero = Object.freeze(new Vector3(0, 0, 0))
-const one = Object.freeze(new Vector3(1, 1, 1))
-
+exports.Vector3 = Vector3;
+const left = Object.freeze(vec3(-1, 0, 0));
+const up = Object.freeze(vec3(0, 1, 0));
+const right = Object.freeze(vec3(1, 0, 0));
+const down = Object.freeze(vec3(0, -1, 0));
+const forward = Object.freeze(vec3(0, 0, 1));
+const back = Object.freeze(vec3(0, 0, -1));
+const zero = Object.freeze(vec3(0, 0, 0));
+const one = Object.freeze(vec3(1, 1, 1));
 /**
- * @param {number} x x-component
- * @param {number} y y-component
- * @param {number} z z-component
+ * @param x x-component
+ * @param y y-component
+ * @param z z-component
  */
-export function vec3(x = 0, y = 0, z = 0) {
-	return new Vector3(x, y, z)
+function vec3(x = 0, y = 0, z = 0) {
+    return new Vector3(x, y, z);
 }
+exports.vec3 = vec3;
+exports.default = Vector3;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidmVjMy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9tYXRoL3ZlYzMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsTUFBYSxPQUFPO0lBVW5COzs7O09BSUc7SUFDSCxZQUFtQixJQUFZLENBQUMsRUFBRSxJQUFZLENBQUMsRUFBRSxJQUFZLENBQUM7UUFDN0QsSUFBSSxDQUFDLENBQUMsR0FBRyxDQUFDLENBQUE7UUFDVixJQUFJLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQTtRQUNWLElBQUksQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFBO0lBQ1gsQ0FBQztJQUVELHVCQUF1QjtJQUN2QixJQUFXLFlBQVk7UUFDdEIsT0FBTyxJQUFJLENBQUMsQ0FBQyxHQUFHLElBQUksQ0FBQyxDQUFDLEdBQUcsSUFBSSxDQUFDLENBQUMsR0FBRyxJQUFJLENBQUMsQ0FBQyxHQUFHLElBQUksQ0FBQyxDQUFDLEdBQUcsSUFBSSxDQUFDLENBQUMsQ0FBQTtJQUMzRCxDQUFDO0lBRUQsZ0JBQWdCO0lBQ2hCLElBQVcsU0FBUztRQUNuQixPQUFPLElBQUksQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLFlBQVksQ0FBQyxDQUFBO0lBQ3BDLENBQUM7SUFFRCwwQkFBMEI7SUFDMUIsSUFBVyxVQUFVO1FBQ3BCLE9BQU8sSUFBSSxDQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMsU0FBUyxDQUFDLENBQUE7SUFDaEMsQ0FBQztJQUVELGNBQWM7SUFDZCxJQUFXLEdBQUc7UUFDYixPQUFPLElBQUksT0FBTyxDQUFDLENBQUMsR0FBRyxJQUFJLENBQUMsQ0FBQyxFQUFFLENBQUMsR0FBRyxJQUFJLENBQUMsQ0FBQyxFQUFFLENBQUMsR0FBRyxJQUFJLENBQUMsQ0FBQyxDQUFDLENBQUE7SUFDdkQsQ0FBQztJQUVELGlDQUFpQztJQUNqQyxJQUFXLEtBQUs7UUFDZixPQUFPLEtBQUssQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDLElBQUksS0FBSyxD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Q0FBQyxLQUFLLENBQUMsSUFBYSxFQUFFLEVBQVc7UUFDN0MsT0FBTyxJQUFJLENBQUMsS0FBSyxDQUFDLEVBQUUsQ0FBQyxDQUFDLEdBQUcsSUFBSSxDQUFDLENBQUMsRUFBRSxFQUFFLENBQUMsQ0FBQyxHQUFHLElBQUksQ0FBQyxDQUFDLENBQUMsR0FBRyxHQUFHLEdBQUcsSUFBSSxDQUFDLEVBQUUsQ0FBQTtJQUNoRSxDQUFDO0NBQ0Q7QUF0SkQsMEJBc0pDO0FBRUQsTUFBTSxJQUFJLEdBQUcsTUFBTSxDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUE7QUFDMUMsTUFBTSxFQUFFLEdBQUcsTUFBTSxDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUMsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFBO0FBQ3ZDLE1BQU0sS0FBSyxHQUFHLE1BQU0sQ0FBQyxNQUFNLENBQUMsSUFBSSxDQUFDLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQTtBQUMxQyxNQUFNLElBQUksR0FBRyxNQUFNLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQTtBQUMxQyxNQUFNLE9BQU8sR0FBRyxNQUFNLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUE7QUFDNUMsTUFBTSxJQUFJLEdBQUcsTUFBTSxDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUMsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUE7QUFDMUMsTUFBTSxJQUFJLEdBQUcsTUFBTSxDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUMsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFBO0FBQ3pDLE1BQU0sR0FBRyxHQUFHLE1BQU0sQ0FBQyxNQUFNLENBQUMsSUFBSSxDQUFDLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQTtBQUV4Qzs7OztHQUlHO0FBQ0gsU0FBZ0IsSUFBSSxDQUFDLElBQVksQ0FBQyxFQUFFLElBQVksQ0FBQyxFQUFFLElBQVksQ0FBQztJQUMvRCxPQUFPLElBQUksT0FBTyxDQUFDLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUE7QUFDNUIsQ0FBQztBQUZELG9CQUVDO0FBRUQsa0JBQWUsT0FBTyxDQUFBIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGNsYXNzIFZlY3RvcjMge1xyXG5cdC8qKiB4LWNvbXBvbmVudCAqL1xyXG5cdHB1YmxpYyB4OiBudW1iZXJcclxuXHJcblx0LyoqIHktY29tcG9uZW50ICovXHJcblx0cHVibGljIHk6IG51bWJlclxyXG5cclxuXHQvKiogei1jb21wb25lbnQgKi9cclxuXHRwdWJsaWMgejogbnVtYmVyXHJcblxyXG5cdC8qKlxyXG5cdCAqIEBwYXJhbSB4IHgtY29tcG9uZW50XHJcblx0ICogQHBhcmFtIHkgeS1jb21wb25lbnRcclxuXHQgKiBAcGFyYW0geiB6LWNvbXBvbmVudFxyXG5cdCAqL1xyXG5cdHB1YmxpYyBjb25zdHJ1Y3Rvcih4OiBudW1iZXIgPSAwLCB5OiBudW1iZXIgPSAwLCB6OiBudW1iZXIgPSAwKSB7XHJcblx0XHR0aGlzLnggPSB4XHJcblx0XHR0aGlzLnkgPSB5XHJcblx0XHR0aGlzLnogPSB6XHJcblx0fVxyXG5cclxuXHQvKiogU3F1YXJlIG1hZ25pdHVkZSAqL1xyXG5cdHB1YmxpYyBnZXQgc3FyTWFnbml0dWRlKCk6IG51bWJlciB7XHJcblx0XHRyZXR1cm4gdGhpcy54ICogdGhpcy54ICsgdGhpcy55ICogdGhpcy55ICsgdGhpcy56ICogdGhpcy56XHJcblx0fVxyXG5cclxuXHQvKiogTWFnbml0dWRlICovXHJcblx0cHVibGljIGdldCBtYWduaXR1ZGUoKTogbnVtYmVyIHtcclxuXHRcdHJldHVybiBNYXRoLnNxcnQodGhpcy5zcXJNYWduaXR1ZGUpXHJcblx0fVxyXG5cclxuXHQvKiogTm9ybWFsaXplZCBpbnN0YW5jZSAqL1xyXG5cdHB1YmxpYyBnZXQgbm9ybWFsaXplZCgpOiBWZWN0b3IzIHtcclxuXHRcdHJldHVybiB0aGlzLmRpdih0aGlzLm1hZ25pdHVkZSlcclxuXHR9XHJcblxyXG5cdC8qKiBJbnZlcnNlICovXHJcblx0cHVibGljIGdldCBpbnYoKTogVmVjdG9yMyB7XHJcblx0XHRyZXR1cm4gbmV3IFZlY3RvcjMoMSAvIHRoaXMueCwgMSAvIHRoaXMueSwgMSAvIHRoaXMueilcclxuXHR9XHJcblxyXG5cdC8qKiBXaGV0aGVyIGEgY29tcG9uZW50IGlzIE5hTiAqL1xyXG5cdHB1YmxpYyBnZXQgaXNOYW4oKTogYm9vbGVhbiB7XHJcblx0XHRyZXR1cm4gaXNOYU4odGhpcy54KSB8fCBpc05hTih0aGlzLnkpIHx8IGlzTmFOKHRoaXMueilcclxuXHR9XHJcblxyXG5cdC8qKiA0ZCB2ZWN0b3IgYXJyYXkgKi9cclxuXHRwdWJsaWMgZ2V0IHh5encoKTogW251bWJlciwgbnVtYmVyLCBudW1iZXIsIG51bWJlcl0ge1xyXG5cdFx0cmV0dXJuIFt0aGlzLngsIHRoaXMueSwgdGhpcy56LCAxXVxyXG5cdH1cclxuXHJcblx0cHVibGljIHN0YXRpYyBnZXQgbGVmdCgpOiBSZWFkb25seTxWZWN0b3IzPiB7IHJldHVybiBsZWZ0IH1cclxuXHRwdWJsaWMgc3RhdGljIGdldCB1cCgpOiBSZWFkb25seTxWZWN0b3IzPiB7IHJldHVybiB1cCB9XHJcblx0cHVibGljIHN0YXRpYyBnZXQgcmlnaHQoKTogUmVhZG9ubHk8VmVjdG9yMz4geyByZXR1cm4gcmlnaHQgfVxyXG5cdHB1YmxpYyBzdGF0aWMgZ2V0IGRvd24oKTogUmVhZG9ubHk8VmVjdG9yMz4geyByZXR1cm4gZG93biB9XHJcblx0cHVibGljIHN0YXRpYyBnZXQgZm9yd2FyZCgpOiBSZWFkb25seTxWZWN0b3IzPiB7IHJldHVybiBmb3J3YXJkIH1cclxuXHRwdWJsaWMgc3RhdGljIGdldCBiYWNrKCk6IFJlYWRvbmx5PFZlY3RvcjM+IHsgcmV0dXJuIGJhY2sgfVxyXG5cdHB1YmxpYyBzdGF0aWMgZ2V0IHplcm8oKTogUmVhZG9ubHk8VmVjdG9yMz4geyByZXR1cm4gemVybyB9XHJcblx0cHVibGljIHN0YXRpYyBnZXQgb25lKCk6IFJlYWRvbmx5PFZlY3RvcjM+IHsgcmV0dXJuIG9uZSB9XHJcblxyXG5cdC8qKlxyXG5cdCAqIEByZXR1cm5zIFZlY3RvciByZXN1bHRpbmcgZnJvbSBhZGRpdGlvblxyXG5cdCAqL1xyXG5cdHB1YmxpYyBhZGQob3RoZXI6IFZlY3RvcjMpOiBWZWN0b3IzIHtcclxuXHRcdHJldHVybiBuZXcgVmVjdG9yMyh0aGlzLnggKyBvdGhlci54LCB0aGlzLnkgKyBvdGhlci55LCB0aGlzLnogKyBvdGhlci56KVxyXG5cdH1cclxuXHJcblx0LyoqXHJcblx0ICogQHJldHVybnMgVmVjdG9yIHJlc3VsdGluZyBmcm9tIHN1YnRyYWN0aW9uXHJcblx0ICovXHJcblx0cHVibGljIHN1YihvdGhlcjogVmVjdG9yMyk6IFZlY3RvcjMge1xyXG5cdFx0cmV0dXJuIG5ldyBWZWN0b3IzKHRoaXMueCAtIG90aGVyLngsIHRoaXMueSAtIG90aGVyLnksIHRoaXMueiAtIG90aGVyLnopXHJcblx0fVxyXG5cclxuXHQvKipcclxuXHQgKiBAcmV0dXJucyBWZWN0b3IgcmVzdWx0aW5nIGZyb20gc2NhbGluZyBlYWNoIGNvbXBvbmVudFxyXG5cdCAqL1xyXG5cdHB1YmxpYyBtdWwoc2NhbGFyOiBudW1iZXIpOiBWZWN0b3IzIHtcclxuXHRcdHJldHVybiBuZXcgVmVjdG9yMyh0aGlzLnggKiBzY2FsYXIsIHRoaXMueSAqIHNjYWxhciwgdGhpcy56ICogc2NhbGFyKVxyXG5cdH1cclxuXHJcblx0LyoqXHJcblx0ICogQHJldHVybnMgVmVjdG9yIHJlc3VsdGluZyBmcm9tIGludmVyc2VseSBzY2FsaW5nIGVhY2ggY29tcG9uZW50XHJcblx0ICovXHJcblx0cHVibGljIGRpdihzY2FsYXI6IG51bWJlcik6IFZlY3RvcjMge1xyXG5cdFx0cmV0dXJuIG5ldyBWZWN0b3IzKHRoaXMueCAvIHNjYWxhciwgdGhpcy55IC8gc2NhbGFyLCB0aGlzLnogLyBzY2FsYXIpXHJcblx0fVxyXG5cclxuXHQvKipcclxuXHQgKiBAcGFyYW0gb3RoZXIgVmVjdG9yIHRvIHNjYWxlIGJ5XHJcblx0ICogQHJldHVybnMgVmVjdG9yIHJlc3VsdGluZyBmcm9tIGNvbXBvbmVudC13aXNlIG11bHRpcGxpY2F0aW9uXHJcblx0ICovXHJcblx0cHVibGljIHNjYWxlKG90aGVyOiBWZWN0b3IzKTogVmVjdG9yMyB7XHJcblx0XHRyZXR1cm4gbmV3IFZlY3RvcjMoXHJcblx0XHRcdHRoaXMueCAqIG90aGVyLngsXHJcblx0XHRcdHRoaXMueSAqIG90aGVyLnksXHJcblx0XHRcdHRoaXMueiAqIG90aGVyLnpcclxuXHRcdClcclxuXHR9XHJcblxyXG5cdC8qKlxyXG5cdCAqIEBwYXJhbSBvdGhlciBWZWN0b3IgdG8gZG90IHdpdGhcclxuXHQgKiBAcmV0dXJucyBEb3QgcHJvZHVjdFxyXG5cdCAqL1xyXG5cdHB1YmxpYyBkb3Qob3RoZXI6IFZlY3RvcjMpOiBudW1iZXIge1xyXG5cdFx0cmV0dXJuIHRoaXMueCAqIG90aGVyLnggKyB0aGlzLnkgKiBvdGhlci55ICsgdGhpcy56ICogdGhpcy56XHJcblx0fVxyXG5cclxuXHQvKipcclxuXHQgKiBAcGFyYW0gb3RoZXIgVmVjdG9yIHRvIGNyb3NzIHdpdGhcclxuXHQgKiBAcmV0dXJucyBDcm9zcyBwcm9kdWN0XHJcblx0ICovXHJcblx0cHVibGljIGNyb3NzKG90aGVyOiBWZWN0b3IzKTogVmVjdG9yMyB7XHJcblx0XHRyZXR1cm4gbmV3IFZlY3RvcjModGhpcy55ICogb3RoZXIueiAtIHRoaXMueiAqIG90aGVyLnksIHRoaXMueiAqIG90aGVyLnggLSB0aGlzLnggKiBvdGhlci56LCB0aGlzLnggKiBvdGhlci55IC0gdGhpcy55ICogb3RoZXIueClcclxuXHR9XHJcblxyXG5cdC8qKlxyXG5cdCAqIEBwYXJhbSBvdGhlciBWZWN0b3IgdG8gY3Jvc3Mgd2l0aFxyXG5cdCAqIEByZXR1cm5zQ3Jvc3MgcHJvZHVjdFxyXG5cdCAqL1xyXG5cdHB1YmxpYyBjcm9zczJkKG90aGVyOiBWZWN0b3IzKTogbnVtYmVyIHtcclxuXHRcdHJldHVybiB0aGlzLnggKiBvdGhlci55IC0gdGhpcy55ICogb3RoZXIueFxyXG5cdH1cclxuXHJcblx0LyoqXHJcblx0ICogQHJldHVybnMgeHl6IGFycmF5XHJcblx0ICovXHJcblx0cHVibGljIHZhbHVlT2YoKTogW251bWJlciwgbnVtYmVyLCBudW1iZXJdIHtcclxuXHRcdHJldHVybiBbdGhpcy54LCB0aGlzLnksIHRoaXMuel1cclxuXHR9XHJcblxyXG5cdHB1YmxpYyB0b1N0cmluZygpOiBzdHJpbmcge1xyXG5cdFx0cmV0dXJuIGAoJHtwYXJzZUZsb2F0KHRoaXMueC50b0ZpeGVkKDMpKX0sICR7cGFyc2VGbG9hdCh0aGlzLnkudG9GaXhlZCgzKSl9LCAke3BhcnNlRmxvYXQodGhpcy56LnRvRml4ZWQoMykpfSlgXHJcblx0fVxyXG5cclxuXHQvKipcclxuXHQgKiBAcGFyYW0gb3RoZXIgV2hldGhlciB4eXogdmFsdWVzIGFyZSBpZGVudGljYWxcclxuXHQgKi9cclxuXHRwdWJsaWMgZXF1YWxzKG90aGVyOiBWZWN0b3IzKTogYm9vbGVhbiB7XHJcblx0XHRyZXR1cm4gb3RoZXIgaW5zdGFuY2VvZiBWZWN0b3IzICYmIHRoaXMueCA9PT0gb3RoZXIueCAmJiB0aGlzLnkgPT09IG90aGVyLnkgJiYgdGhpcy56ID09PSBvdGhlci56XHJcblx0fVxyXG5cclxuXHQvKipcclxuXHQgKiBAcGFyYW0gZnJvbSBQb2ludCAxXHJcblx0ICogQHBhcmFtIHRvIFBvaW50IDJcclxuXHQgKiBAcmV0dXJucyBBbmdsZSBiZXR3ZWVuIHRoZSBwb2ludHMgaW4gZGVncmVlc1xyXG5cdCAqL1xyXG5cdHB1YmxpYyBzdGF0aWMgYW5nbGUoZnJvbTogVmVjdG9yMywgdG86IFZlY3RvcjMpOiBudW1iZXIge1xyXG5cdFx0cmV0dXJuIE1hdGguYXRhbjIodG8ueSAtIGZyb20ueSwgdG8ueCAtIGZyb20ueCkgKiAxODAgLyBNYXRoLlBJXHJcblx0fVxyXG59XHJcblxyXG5jb25zdCBsZWZ0ID0gT2JqZWN0LmZyZWV6ZSh2ZWMzKC0xLCAwLCAwKSlcclxuY29uc3QgdXAgPSBPYmplY3QuZnJlZXplKHZlYzMoMCwgMSwgMCkpXHJcbmNvbnN0IHJpZ2h0ID0gT2JqZWN0LmZyZWV6ZSh2ZWMzKDEsIDAsIDApKVxyXG5jb25zdCBkb3duID0gT2JqZWN0LmZyZWV6ZSh2ZWMzKDAsIC0xLCAwKSlcclxuY29uc3QgZm9yd2FyZCA9IE9iamVjdC5mcmVlemUodmVjMygwLCAwLCAxKSlcclxuY29uc3QgYmFjayA9IE9iamVjdC5mcmVlemUodmVjMygwLCAwLCAtMSkpXHJcbmNvbnN0IHplcm8gPSBPYmplY3QuZnJlZXplKHZlYzMoMCwgMCwgMCkpXHJcbmNvbnN0IG9uZSA9IE9iamVjdC5mcmVlemUodmVjMygxLCAxLCAxKSlcclxuXHJcbi8qKlxyXG4gKiBAcGFyYW0geCB4LWNvbXBvbmVudFxyXG4gKiBAcGFyYW0geSB5LWNvbXBvbmVudFxyXG4gKiBAcGFyYW0geiB6LWNvbXBvbmVudFxyXG4gKi9cclxuZXhwb3J0IGZ1bmN0aW9uIHZlYzMoeDogbnVtYmVyID0gMCwgeTogbnVtYmVyID0gMCwgejogbnVtYmVyID0gMCk6IFZlY3RvcjMge1xyXG5cdHJldHVybiBuZXcgVmVjdG9yMyh4LCB5LCB6KVxyXG59XHJcblxyXG5leHBvcnQgZGVmYXVsdCBWZWN0b3IzIl19

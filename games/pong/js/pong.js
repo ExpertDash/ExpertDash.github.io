@@ -49,7 +49,8 @@ async function play(mode) {
 		new KeySystem(document.querySelector("body")),
 		new MouseSystem(document.querySelector("body")),
 		TimeSystem,
-		ControlSystem
+		ControlSystem,
+		CollisionSystem
 	)
 
 	let shader = await new Shader("./shaders/flat.glsl")
@@ -101,7 +102,6 @@ async function play(mode) {
 		case "sp":
 			ECS.enableSystem(
 				MotionSystem,
-				CollisionSystem,
 				BallSystem,
 				AISystem
 			)
@@ -113,7 +113,6 @@ async function play(mode) {
 			ECS.enableSystem(
 				ServerSystem,
 				MotionSystem,
-				CollisionSystem,
 				BallSystem
 			)
 

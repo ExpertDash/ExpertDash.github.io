@@ -1,58 +1,11 @@
-import ECS from "./ecs.js"
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.System = void 0;
 /**
- * Determines which group a system is updated with and what predecessors are possible
- * @enum {Symbol}
+ * Simulates behaviour for objects matching a criterion
  */
-export const Category = Object.freeze({
-	Physics: Symbol("Physics"),
-	Input: Symbol("Input"),
-	Logic: Symbol("Logic"),
-	Graphics: Symbol("Graphics"),
-	UI: Symbol("UI")
-})
-
-/**
- * Category order
- * @type {Map.<Category, number>}
- */
-export const CategoryOrder = new Map([
-	Category.Physics,
-	Category.Input,
-	Category.Logic,
-	Category.UI,
-	Category.Graphics
-].map((v, i) => [v, i]))
-
-/**
- * Updates entities based on their components
- */
-export default class System {
-	/**
-	 * @returns {function(new: System)[]} Systems in the same category to be updated prior
-	 */
-	get predecessors() {
-		return []
-	}
-
-	/**
-	 * @returns {Category} Determines which systems this is updated with
-	 */
-	get category() {
-		return Category.Logic
-	}
-
-	/** Update this system */
-	update() {
-		throw new Error(`Update not implemented for ${this.constructor.name}`)
-	}
-
-	/**
-	 * The phase at which this system is updated.
-	 * 
-	 * Evaluated based on the system's category and predecessors
-	 */
-	static get phase() {
-		return ECS.systems.findIndex(s => s.constructor == this)
-	}
+class System {
 }
+exports.System = System;
+exports.default = System;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic3lzdGVtLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2Vjcy9zeXN0ZW0udHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBSUE7O0dBRUc7QUFDSCxNQUFzQixNQUFNO0NBSzNCO0FBTEQsd0JBS0M7QUFZRCxrQkFBZSxNQUFNLENBQUEiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgRW50aXRpZXMgZnJvbSBcIi4vZW50aXRpZXMuanNcIlxyXG5cclxudHlwZSBDb25zdHJ1Y3RvcjxUPiA9IG5ldyguLi5hcmdzOiBhbnlbXSkgPT4gVFxyXG5cclxuLyoqXHJcbiAqIFNpbXVsYXRlcyBiZWhhdmlvdXIgZm9yIG9iamVjdHMgbWF0Y2hpbmcgYSBjcml0ZXJpb25cclxuICovXHJcbmV4cG9ydCBhYnN0cmFjdCBjbGFzcyBTeXN0ZW0ge1xyXG5cdC8qKlxyXG5cdCAqIFVwZGF0ZSBtYXRjaGluZyBlbnRpdGllc1xyXG5cdCAqL1xyXG5cdHB1YmxpYyBhYnN0cmFjdCB1cGRhdGUoZW50aXRpZXM6IEVudGl0aWVzKTogdm9pZFxyXG59XHJcblxyXG5leHBvcnQgbmFtZXNwYWNlIFN5c3RlbSB7XHJcblx0ZXhwb3J0IGludGVyZmFjZSBPcmRlciB7XHJcblx0XHQvKiogU3lzdGVtcyB3aGljaCB0aGlzIHN5c3RlbSBtdXN0IGJlIHVwZGF0ZWQgYmVmb3JlICovXHJcblx0XHRiZWZvcmU/OiBDb25zdHJ1Y3RvcjxTeXN0ZW0+W11cclxuXHRcclxuXHRcdC8qKiBTeXN0ZW1zIHdoaWNoIHRoaXMgc3lzdGVtIG11c3QgYmUgdXBkYXRlZCBhZnRlciAqL1xyXG5cdFx0YWZ0ZXI/OiBDb25zdHJ1Y3RvcjxTeXN0ZW0+W11cclxuXHR9XHJcbn1cclxuXHJcbmV4cG9ydCBkZWZhdWx0IFN5c3RlbSJdfQ==

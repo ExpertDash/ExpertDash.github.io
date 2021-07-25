@@ -29,7 +29,7 @@ export default class BallSystem extends System {
 
 				entity(collision.entityId).try(Transform, t => {
 					let r = Vector3.angle(t.position, transform.position) * Math.PI / 180
-					console.log(r * 180 / Math.PI)
+					// console.log(r * 180 / Math.PI)
 					motion.velocity = vec3(Math.cos(r), Math.sin(r)).mul(speed)
 				})
 			}

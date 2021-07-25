@@ -1,34 +1,26 @@
-import KeySystem from "../ecs/systems/key-system.js"
-import MouseSystem from "../ecs/systems/mouse-system.js"
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const keySystem_js_1 = __importDefault(require("../common/systems/keySystem.js"));
+const mouseSystem_js_1 = __importDefault(require("../common/systems/mouseSystem.js"));
+const world_js_1 = __importDefault(require("../common/world.js"));
 /** Unifies mouse button and key state acquisition methods */
-export default class Input {
-	/** Position of the mouse on the display */
-	static get mousePosition() {
-		return MouseSystem.position
-	}
-
-	/**
-	 * @param {string|number} button 
-	 * @returns {boolean}
-	 */
-	static held(button) {
-		return button.startsWith("Mouse") ? MouseSystem.held(button) : KeySystem.held(button)
-	}
-
-	/**
-	 * @param {string|number} button 
-	 * @returns {boolean}
-	 */
-	static down(button) {
-		return button.startsWith("Mouse") ? MouseSystem.down(button) : KeySystem.down(button)
-	}
-
-	/**
-	 * @param {string|number} button 
-	 * @returns {boolean}
-	 */
-	static up(button) {
-		return button.startsWith("Mouse") ? MouseSystem.up(button) : KeySystem.up(button)
-	}
+class Input {
+    /** Position of the mouse on the display */
+    static get mousePosition() {
+        return world_js_1.default.systems.get(mouseSystem_js_1.default).position;
+    }
+    static held(button) {
+        return button.startsWith("Mouse") ? world_js_1.default.systems.get(mouseSystem_js_1.default).held(button) : world_js_1.default.systems.get(keySystem_js_1.default).held(button);
+    }
+    static down(button) {
+        return button.startsWith("Mouse") ? world_js_1.default.systems.get(mouseSystem_js_1.default).down(button) : world_js_1.default.systems.get(keySystem_js_1.default).down(button);
+    }
+    static up(button) {
+        return button.startsWith("Mouse") ? world_js_1.default.systems.get(mouseSystem_js_1.default).up(button) : world_js_1.default.systems.get(keySystem_js_1.default).up(button);
+    }
 }
+exports.default = Input;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5wdXQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvdXRpbHMvaW5wdXQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7QUFBQSxrRkFBc0Q7QUFDdEQsc0ZBQTBEO0FBQzFELGtFQUFzQztBQUd0Qyw2REFBNkQ7QUFDN0QsTUFBcUIsS0FBSztJQUN6QiwyQ0FBMkM7SUFDcEMsTUFBTSxLQUFLLGFBQWE7UUFDOUIsT0FBTyxrQkFBSyxDQUFDLE9BQU8sQ0FBQyxHQUFHLENBQUMsd0JBQVcsQ0FBQyxDQUFDLFFBQVEsQ0FBQTtJQUMvQyxDQUFDO0lBRU0sTUFBTSxDQUFDLElBQUksQ0FBQyxNQUFjO1FBQ2hDLE9BQU8sTUFBTSxDQUFDLFVBQVUsQ0FBQyxPQUFPLENBQUMsQ0FBQyxDQUFDLENBQUMsa0JBQUssQ0FBQyxPQUFPLENBQUMsR0FBRyxDQUFDLHdCQUFXLENBQUMsQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQyxDQUFDLGtCQUFLLENBQUMsT0FBTyxDQUFDLEdBQUcsQ0FBQyxzQkFBUyxDQUFDLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxDQUFBO0lBQzVILENBQUM7SUFFTSxNQUFNLENBQUMsSUFBSSxDQUFDLE1BQWM7UUFDaEMsT0FBTyxNQUFNLENBQUMsVUFBVSxDQUFDLE9BQU8sQ0FBQyxDQUFDLENBQUMsQ0FBQyxrQkFBSyxDQUFDLE9BQU8sQ0FBQyxHQUFHLENBQUMsd0JBQVcsQ0FBQyxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFDLENBQUMsa0JBQUssQ0FBQyxPQUFPLENBQUMsR0FBRyxDQUFDLHNCQUFTLENBQUMsQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDLENBQUE7SUFDNUgsQ0FBQztJQUVNLE1BQU0sQ0FBQyxFQUFFLENBQUMsTUFBYztRQUM5QixPQUFPLE1BQU0sQ0FBQyxVQUFVLENBQUMsT0FBTyxDQUFDLENBQUMsQ0FBQyxDQUFDLGtCQUFLLENBQUMsT0FBTyxDQUFDLEdBQUcsQ0FBQyx3QkFBVyxDQUFDLENBQUMsRUFBRSxDQUFDLE1BQU0sQ0FBQyxDQUFDLENBQUMsQ0FBQyxrQkFBSyxDQUFDLE9BQU8sQ0FBQyxHQUFHLENBQUMsc0JBQVMsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxNQUFNLENBQUMsQ0FBQTtJQUN4SCxDQUFDO0NBQ0Q7QUFqQkQsd0JBaUJDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IEtleVN5c3RlbSBmcm9tIFwiLi4vY29tbW9uL3N5c3RlbXMva2V5U3lzdGVtLmpzXCJcclxuaW1wb3J0IE1vdXNlU3lzdGVtIGZyb20gXCIuLi9jb21tb24vc3lzdGVtcy9tb3VzZVN5c3RlbS5qc1wiXHJcbmltcG9ydCBXb3JsZCBmcm9tIFwiLi4vY29tbW9uL3dvcmxkLmpzXCJcclxuaW1wb3J0IFZlY3RvcjMgZnJvbSBcIi4uL21hdGgvdmVjMy5qc1wiXHJcblxyXG4vKiogVW5pZmllcyBtb3VzZSBidXR0b24gYW5kIGtleSBzdGF0ZSBhY3F1aXNpdGlvbiBtZXRob2RzICovXHJcbmV4cG9ydCBkZWZhdWx0IGNsYXNzIElucHV0IHtcclxuXHQvKiogUG9zaXRpb24gb2YgdGhlIG1vdXNlIG9uIHRoZSBkaXNwbGF5ICovXHJcblx0cHVibGljIHN0YXRpYyBnZXQgbW91c2VQb3NpdGlvbigpOiBWZWN0b3IzIHtcclxuXHRcdHJldHVybiBXb3JsZC5zeXN0ZW1zLmdldChNb3VzZVN5c3RlbSkucG9zaXRpb25cclxuXHR9XHJcblxyXG5cdHB1YmxpYyBzdGF0aWMgaGVsZChidXR0b246IHN0cmluZyk6IGJvb2xlYW4ge1xyXG5cdFx0cmV0dXJuIGJ1dHRvbi5zdGFydHNXaXRoKFwiTW91c2VcIikgPyBXb3JsZC5zeXN0ZW1zLmdldChNb3VzZVN5c3RlbSkuaGVsZChidXR0b24pIDogV29ybGQuc3lzdGVtcy5nZXQoS2V5U3lzdGVtKS5oZWxkKGJ1dHRvbilcclxuXHR9XHJcblxyXG5cdHB1YmxpYyBzdGF0aWMgZG93bihidXR0b246IHN0cmluZyk6IGJvb2xlYW4ge1xyXG5cdFx0cmV0dXJuIGJ1dHRvbi5zdGFydHNXaXRoKFwiTW91c2VcIikgPyBXb3JsZC5zeXN0ZW1zLmdldChNb3VzZVN5c3RlbSkuZG93bihidXR0b24pIDogV29ybGQuc3lzdGVtcy5nZXQoS2V5U3lzdGVtKS5kb3duKGJ1dHRvbilcclxuXHR9XHJcblxyXG5cdHB1YmxpYyBzdGF0aWMgdXAoYnV0dG9uOiBzdHJpbmcpOiBib29sZWFuIHtcclxuXHRcdHJldHVybiBidXR0b24uc3RhcnRzV2l0aChcIk1vdXNlXCIpID8gV29ybGQuc3lzdGVtcy5nZXQoTW91c2VTeXN0ZW0pLnVwKGJ1dHRvbikgOiBXb3JsZC5zeXN0ZW1zLmdldChLZXlTeXN0ZW0pLnVwKGJ1dHRvbilcclxuXHR9XHJcbn0iXX0=
