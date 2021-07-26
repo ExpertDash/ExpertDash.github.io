@@ -107,7 +107,7 @@ export default class RenderSystem extends System {
 			let modelViewMatrix = model.material.shader.getUniform("modelViewMatrix").location
 
 			gl.useProgram(model.material.shader.program)
-			gl.bindBuffer(GL.ARRAY_BUFFER, model.mesh.vertexBuffer)
+			gl.bindBuffer(GL.ARRAY_BUFFER, model.vertexBuffer)
 			gl.vertexAttribPointer(vertexPosition, 2, GL.FLOAT, false, 0, 0)
 			gl.enableVertexAttribArray(vertexPosition)
 			model.material.apply(gl)

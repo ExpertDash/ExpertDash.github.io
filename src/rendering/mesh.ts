@@ -16,8 +16,6 @@ export class Mesh {
 	/** Local convex hull containing points in a counter-clockwise fashion around the mesh */
 	public readonly hull: Vector3[]
 
-	public readonly vertexBuffer: WebGLBuffer
-
 	public constructor(vertices: Vector3[], triangles?: number[], uvs?: number[]) {
 		this.vertices = vertices
 		this.triangles = triangles
@@ -29,19 +27,20 @@ export class Mesh {
 		// for(let v of vertices) {
 			
 		// }
+	}
 
+	public createVertexBuffer(): WebGLBuffer {
 		let gl = World.systems.get(RenderSystem).context
 
-		if(!gl || this.vertexBuffer != null)
-			return
-
-		this.vertexBuffer = gl.createBuffer()
-		gl.bindBuffer(GL.ARRAY_BUFFER, this.vertexBuffer)
+		let vertexBuffer = gl.createBuffer()
+		gl.bindBuffer(GL.ARRAY_BUFFER, vertexBuffer)
 		gl.bufferData(
 			GL.ARRAY_BUFFER,
 			new Float32Array(this.vertices.map(v => [v.x, v.y]).flat()),
 			GL.STATIC_DRAW
 		)
+
+		return vertexBuffer
 	}
 }
 

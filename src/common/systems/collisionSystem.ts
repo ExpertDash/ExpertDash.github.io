@@ -2,10 +2,16 @@ import Collision from "../../physics/collision.js"
 import {System} from "../../ecs.js"
 import Entities from "../../ecs/entities.js"
 import World, {Simulator} from "../world.js"
-import {Collider, Model, MotionSystem, Transform} from "../lib.js"
+import MotionSystem from "./motionSystem.js"
+import Transform from "../components/transform.js"
+import Model from "../components/model.js"
+import Collider from "../components/collider.js"
 
 /** Provides collision detection */
-@World.register.system({after: [Simulator.Category.Physics, MotionSystem]})
+@World.register.system({
+	after: [Simulator.Category.Physics, MotionSystem],
+	before: [Simulator.Category.Input]
+})
 export default class CollisionSystem extends System {
 	public override update(entities: Entities): void {
 		let matching = [...entities.with(Transform, Model, Collider)]

@@ -75,6 +75,8 @@ async function play(mode: Mode): Promise<void> {
 			break
 	}
 
+	console.log([...World.systems])
+
 	Pong.resetRound()
 }
 
