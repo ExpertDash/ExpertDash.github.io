@@ -5,7 +5,7 @@ import World, {Simulator} from "../world.js"
 import MotionSystem from "./motionSystem.js"
 
 /** Simulates 2d gravity for entities with a motion component */
-@World.register.system<typeof GravitySystem>({before: [MotionSystem], after: [Simulator.Category.Physics]}, 9.81)
+@World.register.system<typeof GravitySystem>(Simulator.phase(Simulator.Category.Physics, {before: [MotionSystem]}), 9.81)
 export default class GravitySystem extends System {
 	public acceleration: number
 

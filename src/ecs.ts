@@ -53,7 +53,7 @@ export namespace ECS {
 		 * @param param0 Defines order of the system relative to others
 		 * @param args Parameters to construct the system instance with
 		 */
-		public system<T extends Constructor<System>>({before, after}: System.Order, ...args: ConstructorParameters<T>): (ctor: ConstructorInstance<T>) => T
+		public system<T extends Constructor<System>>({after, before}: System.Order, ...args: ConstructorParameters<T>): (ctor: ConstructorInstance<T>) => T
 
 		/**
 		 * @param args Parameters to construct the system instance with

@@ -6,12 +6,10 @@ import MotionSystem from "./motionSystem.js"
 import Transform from "../components/transform.js"
 import Model from "../components/model.js"
 import Collider from "../components/collider.js"
+import Name from "../components/name.js"
 
 /** Provides collision detection */
-@World.register.system({
-	after: [Simulator.Category.Physics, MotionSystem],
-	before: [Simulator.Category.Input]
-})
+@World.register.system(Simulator.phase(Simulator.Category.Physics, {after: [MotionSystem]}))
 export default class CollisionSystem extends System {
 	public override update(entities: Entities): void {
 		let matching = [...entities.with(Transform, Model, Collider)]
@@ -28,7 +26,7 @@ export default class CollisionSystem extends System {
 			let entity = matching.pop()
 			let collider = entity.get(Collider)
 
-			for(let otherEntity of entities) {
+			for(let otherEntity of matching) {
 				let otherCollider = otherEntity.get(Collider)
 
 				if(collider.boundingBox.collides(otherCollider.boundingBox)) {

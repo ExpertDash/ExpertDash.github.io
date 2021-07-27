@@ -13,12 +13,12 @@ export abstract class System {
 }
 
 export namespace System {
-	export interface Order {
-		/** Systems which this system must be updated before */
-		before?: Constructor<System>[]
-	
+	export interface Order {	
 		/** Systems which this system must be updated after */
 		after?: Constructor<System>[]
+
+		/** Systems which this system must be updated before */
+		before?: Constructor<System>[]
 	}
 }
 

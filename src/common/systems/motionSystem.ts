@@ -6,7 +6,7 @@ import Transform from "../components/transform.js"
 import World, {Simulator} from "../world.js"
 
 /** Simulates physical motion for entities with a motion component */
-@World.register.system<typeof MotionSystem>({after: [Simulator.Category.Physics]})
+@World.register.system<typeof MotionSystem>(Simulator.phase(Simulator.Category.Physics))
 export default class MotionSystem extends System {
 	public update(entities: Entities): void {
 		entities.forEach((transform, motion) => {

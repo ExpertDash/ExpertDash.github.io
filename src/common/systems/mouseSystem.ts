@@ -3,7 +3,7 @@ import Vector3 from "../../math/vec3.js"
 import World, {Simulator} from "../world.js"
 
 /** Keeps track of and allows per frame access to the mouse's position and button states */
-@World.register.system<typeof MouseSystem>({after: [Simulator.Category.Input]}, document.querySelector("body"))
+@World.register.system<typeof MouseSystem>(Simulator.phase(Simulator.Category.Input), document.querySelector("body"))
 export default class MouseSystem extends System {
 	private downButtons: Set<string>
 	private heldButtons: Set<string>

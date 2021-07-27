@@ -7,9 +7,10 @@ import World, {Simulator} from "../world.js"
 const GL = WebGLRenderingContext
 
 /** Renders entities onto a target display */
-@World.register.system<typeof RenderSystem>({after: [Simulator.Category.Graphics]}, document.querySelector("canvas"))
+@World.register.system<typeof RenderSystem>(Simulator.phase(Simulator.Category.Graphics), document.querySelector("canvas"))
 export default class RenderSystem extends System {
 	public readonly context: WebGLRenderingContext
+	private readonly canvas: HTMLCanvasElement
 	private nearClip: number = 0.1
 	private farClip: number = 1000
 	private viewMatrix: Matrix4x4
@@ -34,11 +35,12 @@ export default class RenderSystem extends System {
 		)
 
 		this.#ortho = true
+		this.canvas = target
 		this.context = target.getContext("webgl")
-		this.refreshSize(target)
+		this.fit()
 
-		window.removeEventListener("resize", () => this.refreshSize(target))
-		window.addEventListener("resize", () => this.refreshSize(target))
+		window.removeEventListener("resize", () => this.fit())
+		window.addEventListener("resize", () => this.fit())
 	}
 
 	/** Display width */
@@ -89,6 +91,18 @@ export default class RenderSystem extends System {
 		this.refreshProjection()
 	}
 
+	/**
+	 * Fit's the render boundaries to the current screen size
+	 */
+	public fit() {
+		this.canvas.width = screen.width
+		this.canvas.height = screen.height
+		this.#width = this.canvas.clientWidth
+		this.#height = this.canvas.clientHeight
+		this.context.viewport(0, 0, this.canvas.width, this.canvas.height)
+		this.refreshProjection()
+	}
+
 	public update(entities: Entities): void {
 		const gl = this.context
 
@@ -117,17 +131,10 @@ export default class RenderSystem extends System {
 		}, Model, Transform)
 	}
 
-	private refreshSize = (target: HTMLCanvasElement) => {
-		target.width = screen.width
-		target.height = screen.height
-		this.#width = target.clientWidth
-		this.#height = target.clientHeight
-		this.context.viewport(0, 0, target.width, target.height)
-		this.refreshProjection()
-	}
-
-	/** Refresh the projection matrix based on the specified parameters */
-	private refreshProjection = () => {
+	/**
+	 * Refresh the projection matrix based on the specified parameters
+	 */
+	private refreshProjection() {
 		if(this.#ortho)
 			this.projectionMatrix = Matrix4x4.createOrtho(
 				this.#width * this.#size,

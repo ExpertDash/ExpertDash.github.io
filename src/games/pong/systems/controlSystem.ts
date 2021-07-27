@@ -5,9 +5,9 @@ import {Entities, System} from "../../../ecs.js"
 import {vec3} from "../../../math/vec3.js"
 import Input from "../../../utils/input.js"
 import Controllable from "../components/controllable.js"
-import Pong from "../pong.js"
+import Pong from "../main.js"
 
-@World.register.system({after: [Simulator.Category.Input]})
+@World.register.system(Simulator.phase(Simulator.Category.Input))
 export default class ControlSystem extends System {
 	public update(entities: Entities): void {
 		entities.forEach((t, c, _) => {

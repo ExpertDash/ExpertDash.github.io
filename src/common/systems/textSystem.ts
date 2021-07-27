@@ -6,7 +6,7 @@ import RenderSystem from "./renderSystem.js"
 
 type TextOptions = {color: string}
 
-@World.register.system<typeof TextSystem>({after: [Simulator.Category.UI]})
+@World.register.system<typeof TextSystem>(Simulator.phase(Simulator.Category.UI))
 export default class TextSystem extends System {
 	private requested: [Vector3, string, TextOptions][] = []
 	private created: HTMLDivElement[] = []

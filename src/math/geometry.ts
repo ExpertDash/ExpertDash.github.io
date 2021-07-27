@@ -8,7 +8,7 @@ export default abstract class Geometry {
 	 * @param a Point 1
 	 * @param b Point 2
 	 * @param c Point 3
-	 * @returns 0 if colinear, > 0 if cc, or < 0 if ccw
+	 * @returns 0 if colinear, > 0 if clockwise, or < 0 if counter-clockwise
 	 */
 	public static direction(a: Vector3, b: Vector3, c: Vector3): number {
 		return Math.sign((b.y - a.y) * (c.x - b.x) - (b.x - a.x) * (c.y - b.y))

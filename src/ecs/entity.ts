@@ -59,7 +59,7 @@ export default class Entity {
 				throw new Error(`'${ctor.name}' already present on entity ${this.id}`)
 
 			entityRegistry.set(this.id, component)
-			component["removed"](this)
+			component["added"](this)
 		}
 	}
 

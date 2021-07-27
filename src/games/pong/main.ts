@@ -1,4 +1,4 @@
-import {Collider, Model, Motion, MotionSystem, Name, RenderSystem, TextSystem, Transform} from "../../common/lib.js"
+import {Collider, GravitySystem, Model, Motion, MotionSystem, Name, RenderSystem, TextSystem, Transform} from "../../common/lib.js"
 import {Ball, Controllable, CpuController, Ownership, Wall} from "./components/lib.js"
 import {BallSystem, CpuSystem} from "./systems/lib.js"
 import World, {Simulator} from "../../common/world.js"
@@ -25,6 +25,7 @@ async function play(mode: Mode): Promise<void> {
 		new Transform({scale: vec3(0.2, 0.2, 1)}),
 		new Model(Mesh.Primitives.quad, mat),
 		Collider,
+		Motion,
 		Ball
 	)
 
@@ -56,7 +57,7 @@ async function play(mode: Mode): Promise<void> {
 	switch(mode) {
 		case "sp":
 			leftBoard.add(Controllable)
-			rightBoard.add(new CpuController(0.1))
+			rightBoard.add(new CpuController(0.2))
 			break
 		case "host":
 			World.systems.remove(CpuSystem)
@@ -76,7 +77,10 @@ async function play(mode: Mode): Promise<void> {
 	}
 
 	console.log([...World.systems])
+	console.log(Mesh.Primitives.quad)
 
+	World.systems.remove(GravitySystem)
+	World.systems.get(RenderSystem).fit()
 	Pong.resetRound()
 }
 
@@ -112,7 +116,6 @@ export default class Pong {
 			}
 		}, Ball, Motion, Transform)
 
-		Simulator.suspend()
 		Simulator.resume()
 	}
 
@@ -125,7 +128,7 @@ export default class Pong {
 	}
 }
 
-@World.register.system({after: [Simulator.Category.UI, TextSystem]})
+@World.register.system(Simulator.phase(Simulator.Category.UI, {after: [TextSystem]}))
 class DebugSystem extends System {
 	public update(entities: Entities): void {
 		let textSystem = World.systems.get(TextSystem)

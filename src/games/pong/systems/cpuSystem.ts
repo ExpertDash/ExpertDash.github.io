@@ -4,9 +4,9 @@ import {Entities, System} from "../../../ecs.js"
 import {vec3} from "../../../math/vec3.js"
 import Ball from "../components/ball.js"
 import CpuController from "../components/cpuController.js"
-import Pong from "../pong.js"
+import Pong from "../main.js"
 
-@World.register.system({after: [Simulator.Category.Input]})
+@World.register.system(Simulator.phase(Simulator.Category.Input))
 export default class CpuSystem extends System {
 	public update(entities: Entities): void {
 		entities.forEach((cpu, transform) => {

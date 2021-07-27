@@ -3,7 +3,7 @@ import Entities from "../../ecs/entities.js"
 import World, {Simulator} from "../world.js"
 
 /** Keeps track of and allows per frame access to key states */
-@World.register.system<typeof KeySystem>({after: [Simulator.Category.Input]}, document.querySelector("body"))
+@World.register.system<typeof KeySystem>(Simulator.phase(Simulator.Category.Input), document.querySelector("body"))
 export default class KeySystem extends System {
 	private downKeys: Set<string>
 	private heldKeys: Set<string>

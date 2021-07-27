@@ -3,9 +3,9 @@ import World, {Simulator} from "../../../common/world.js"
 import {Entities} from "../../../ecs.js"
 import Vector3, {vec3} from "../../../math/vec3.js"
 import {Ball, Wall} from "../components/lib.js"
-import Pong from "../pong.js"
+import Pong from "../main.js"
 
-@World.register.system({after: [Simulator.Category.Physics]})
+@World.register.system(Simulator.phase(Simulator.Category.Physics))
 export default class BallSystem {
 	public update(entities: Entities): void {
 		let walls = [...entities.with(Wall, Model)]

@@ -1,5 +1,6 @@
 import ECS, {Entities, System} from "../ecs.js"
 import "./lib.js"
+type Constructor<T> = new(...args: any[]) => T
 
 const World = new ECS()
 
@@ -47,18 +48,26 @@ export class Simulator {
 		let logicSystems = systems.slice(0, divider).filter(s => !(s instanceof CategorySystem))
 		let graphicsSystems = systems.slice(divider).filter(s => !(s instanceof CategorySystem))
 
-		this.logicHandle = setInterval(() => {
+		let logicCallback: () => void
+		let renderCallback: (time: number) => void
+
+		logicCallback = () => {
 			for(let system of logicSystems)
 				system.update(World.entities)
-		}, 1000 * Simulator.fixedDeltaTime)
+		}
 
-		this.renderHandle = requestAnimationFrame(time => {
+		renderCallback = time => {
 			Simulator.#deltaTime = (time - lastTime) / 1000
 			lastTime = time
 
 			for(let system of graphicsSystems)
 				system.update(World.entities)
-		})
+
+			this.renderHandle = requestAnimationFrame(renderCallback)
+		}
+
+		this.logicHandle = setInterval(logicCallback, 1000 * Simulator.fixedDeltaTime)
+		this.renderHandle = requestAnimationFrame(renderCallback)
 	}
 
 	/**
@@ -73,6 +82,42 @@ export class Simulator {
 
 		cancelAnimationFrame(this.renderHandle)
 		this.renderHandle = NaN
+	}
+
+	/**
+	 * @param category Category for the system to be placed in
+	 * @param param1 Additional systems describing update order
+	 * @returns Creates an order which updates the system within the specified category
+	 */
+	public static phase(category: Constructor<CategorySystem>, {after, before}: System.Order = {}): System.Order {
+		after ??= []
+		before ??= []
+
+		after.push(category)
+
+		switch(category) {
+			case Simulator.Category.Physics:
+				before.push(Simulator.Category.Input)
+				break
+			case Simulator.Category.Input:
+				before.push(Simulator.Category.Logic)
+				break
+			case Simulator.Category.Logic:
+				before.push(Simulator.Category.UI)
+				break
+			case Simulator.Category.UI:
+				before.push(Simulator.Category.Graphics)
+				break
+			case Simulator.Category.Graphics:
+				break
+			default:
+				throw new Error(`Unknown phase: '${category.name}'`)
+		}
+
+		return <System.Order>{
+			after: after,
+			before: before
+		}
 	}
 }
 
