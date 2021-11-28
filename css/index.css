@@ -1,0 +1,245 @@
+@import url("./style.css");
+
+body {
+	--edge: 30px;
+
+	display: grid;
+	gap: 30px;
+	grid:
+		"scenario   ttkd" max-content
+		"   glist   ttkd" 1fr
+		"   glist  cards" max-content
+		"  footer footer" max-content
+		/   325px   1fr;
+
+	width: calc(100% - 2 * var(--edge));
+	height: calc(100% - 2 * var(--edge));
+	overflow-x: hidden;
+
+	border: none;
+	padding: 0px;
+	margin: var(--edge);
+
+	background: var(--color-background);
+}
+
+footer {
+	grid-area: footer;
+
+	display: grid;
+	grid: "left right";
+
+	height: fit-content;
+
+	padding: 0px 50px;
+}
+
+	footer > div {
+		opacity: 25%;
+	}
+
+	footer > div:nth-child(1) {
+		grid-area: left;
+		justify-self: start;
+	}
+
+	footer > div:nth-child(2) {
+		grid-area: right;
+		justify-self: end;
+	}
+
+input[type="number"] {
+	width: 60px;
+}
+
+#scenario {
+	grid-area: scenario;
+
+	width: 100%;
+	height: fit-content;
+
+	overflow-y: hidden;
+}
+
+	#scenario > * {
+		margin-bottom: 20px;
+	}
+
+	#scenario > #tools {
+		display: grid;
+		gap: 10px;
+		grid-auto-flow: column;
+
+		width: fit-content;
+
+		margin-left: auto;
+		margin-right: 0px;
+	}
+
+		#scenario > #tools > button {
+			border-radius: 5px;
+		}
+
+	#scenario > #distribution > * {
+		align-self: center;
+	}
+
+#ttkd {
+	grid-area: ttkd;
+}
+
+	#ttkd > canvas {
+		width: 100% !important;
+	}
+
+#glist {
+	grid-area: glist;
+
+	width: 100%;
+	height: 100%;
+
+	overflow-y: auto;
+}
+
+	#glist > div {
+		display: grid;
+		grid:
+			"name visibility"
+			/ 1fr       auto;
+
+		margin: 10px 15px 10px 0px;
+		padding: 3px 5px;
+		border-radius: 10px;
+
+		background: var(--color-background-variant);
+		
+	}
+
+		#glist > div > div:nth-child(1) {
+			grid-area: name;
+
+			user-select: none;
+		}
+
+		#glist > div > input:nth-child(2) {
+			grid-area: visibility;
+		}
+
+#cards {
+	grid-area: cards;
+
+	width: 100%;
+	height: max-content;
+
+	overflow-x: scroll;
+	overflow-y: hidden;
+
+	white-space: nowrap;
+}
+
+.card {
+	display: inline-block;
+
+	width: fit-content;
+	height: fit-content;
+
+	margin: 0px 5px 25px;
+	padding: 10px;
+	border-radius: 25px;
+	box-shadow: 2px 2px 2px var(--color-foreground);
+
+	background: var(--color-primary);
+}
+
+	.card > hr {
+		margin: 5px 0px 15px 0px;
+	}
+
+	.card > #name {
+		font-size: 20px;
+	}
+
+	.card > #distribution {
+		width: 30%;
+		height: auto;
+
+		margin: 0px;
+		border: none;
+		padding: 0px;
+
+		float: right;
+	}
+
+	.card > #profile > ul {
+		margin: 5px 0px;
+
+		list-style-type: none;
+	}
+
+		.card > #profile > ul > li {
+			display: grid;
+			gap: 15px;
+			grid:
+				" bullets  label   damage"
+				/  45px      1fr    100px;
+		}
+
+			.card > #profile > ul > li > div {
+				justify-self: start;
+			}
+
+			.card > #profile > ul > li > div:nth-child(1) {
+				grid-area: bullets;
+			}
+
+			.card > #profile > ul > li > div:nth-child(2) {
+				grid-area: label;
+				text-shadow: 2px 2px 0px var(--color-background);
+			}
+
+			.card > #profile > ul > li > div:nth-child(3) {
+				grid-area: damage;
+			}
+
+.pair {
+	display: grid;
+	grid:
+		" key value"
+		/ 200px 1fr;
+
+	margin: 10px 0px;
+}
+
+	.pair > div {
+		height: 30px;
+
+		align-self: center;
+	}
+
+	.pair > div:nth-child(1) {
+		grid-area: key;
+	}
+
+	.pair > div:nth-child(2) {
+		grid-area: value;
+	}
+
+.radioBubbles {
+	display: grid;
+	gap: 10px;
+	grid-auto-flow: column;
+}
+
+	.radioBubbles > button {
+		width: 30px;
+		height: 30px;
+	}
+
+	.radioBubbles > button:active {
+		background: var(--color-primary-variant);
+	}
+
+
+	.radioBubbles > button.selected {
+		background: var(--color-accent);
+	}

@@ -1,21 +1,25 @@
 {
 	"compilerOptions": {
-		"target": "ES2020",
-		"module": "ES6",
+		"target": "ESNext",
 		"rootDir": "src",
 		"outDir": "js",
 		"baseUrl": ".",
-		"allowSyntheticDefaultImports": true,
-		"inlineSourceMap": true,
+		"paths": {
+			"/js/*": ["./src/*"],
+			"/lib/*": ["./lib/*"]
+		},
+		"removeComments": false,
 		"inlineSources": true,
-		"noImplicitAny": true,
-		"noImplicitThis": true,
-		"noImplicitReturns": true,
-		"noImplicitOverride": true,
-		"esModuleInterop": false,
+		"inlineSourceMap": true,
+		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"removeComments": false
+		"allowSyntheticDefaultImports": true,
+		"importsNotUsedAsValues": "preserve",
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true
 	},
 	"include": [
 		"src/**/*"

@@ -1,9 +1,63 @@
 <html>
 	<head>
-		<title>Dash's Games</title>
-		<link rel="stylesheet" type="text/css" href="/css/style.css">
+		<title>Damage Calculator</title>
+		<link rel="icon" type="image/x-icon" href="/resources/icons/favicon.ico"/>
+		<link rel="stylesheet" type="text/css" href="/css/index.css">
+		<script type="module" src="/js/index.js"></script>
 	</head>
 	<body>
-		
+		<div id="scenario">
+			<div id="tools">
+				<button id="import">Import</button>
+				<button id="view">View</button>
+				<button id="refresh">Refresh</button>
+			</div>
+			<div id="health">
+				<label>Health</label>
+				<input type="number" min="0" step="25">
+			</div>
+			<div id="distance">
+				<label>Distance</label>
+				<input type="number" min="10" step="10">
+			</div>
+			<dt id="distributionLabel">Distribution</dt>
+			<dd id="distribution">
+				<div id="head">
+					<input id="text" type="number" min="0" max="1" step="0.01">
+					<input id="slider" type="range" value="0" min="0" max="1" step="0.01">
+					<label>Head</label>
+				</div>
+				<div id="neck">
+					<input id="text" type="number" min="0" max="1" step="0.01">
+					<input id="slider" type="range" value="0" min="0" max="1" step="0.01">
+					<label>Neck</label>
+				</div>
+				<div id="chest">
+					<input id="text" type="number" min="0" max="1" step="0.01">
+					<input id="slider" type="range" value="0" min="0" max="1" step="0.01">
+					<label>Chest</label>
+				</div>
+				<div id="stomach">
+					<input id="text" type="number" min="0" max="1" step="0.01">
+					<input id="slider" type="range" value="0" min="0" max="1" step="0.01">
+					<label>Stomach</label>
+				</div>
+				<div id="limbs">
+					<input id="text" type="number" min="0" max="1" step="0.01">
+					<input id="slider" type="range" value="0" min="0" max="1" step="0.01">
+					<label>Limbs</label>
+				</div>
+			</dd>
+			<hr>
+		</div>
+		<div id="ttkd">
+			<canvas></canvas>
+		</div>
+		<div id="glist"></div>
+		<div id="cards"></div>
+		<footer>
+			<div>Made by Dash and Wumbo</div>
+			<div>View the source <a href="https://github.com/ExpertDash/ExpertDash.github.io">here</a></div>
+		</footer>
 	</body>
 </html>

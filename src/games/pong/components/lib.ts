@@ -1,5 +1,0 @@
-export {default as Ball} from "./ball.js"
-export {default as Controllable} from "./controllable.js"
-export {default as CpuController} from "./cpuController.js"
-export {default as Ownership} from "./ownership.js"
-export {default as Wall} from "./wall.js"
